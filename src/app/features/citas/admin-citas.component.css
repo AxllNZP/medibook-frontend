@@ -1,0 +1,141 @@
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1565C0;
+  font-size: 1.6rem;
+}
+
+.page-header p {
+  margin: 0.25rem 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.filtro-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.filtro-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Tarjetas resumen */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.resumen-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  color: white;
+}
+
+.resumen-card.pendiente  { background: #F57C00; }
+.resumen-card.confirmada { background: #2E7D32; }
+.resumen-card.finalizada { background: #1565C0; }
+.resumen-card.cancelada  { background: #C62828; }
+
+.resumen-numero {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.resumen-label {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* Tabla */
+.tabla-card {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.tabla { width: 100%; }
+
+.fecha-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.especialidad-badge {
+  background: #e3f2fd;
+  color: #1565C0;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+/* Badges de estado */
+.estado-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-pendiente  { background: #FFF3E0; color: #E65100; }
+.estado-confirmada { background: #E8F5E9; color: #2E7D32; }
+.estado-cancelada  { background: #FFEBEE; color: #C62828; }
+.estado-finalizada { background: #E3F2FD; color: #1565C0; }
+
+/* Botones de acción */
+.acciones-cell {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-confirmada { color: #2E7D32 !important; border-color: #2E7D32 !important; }
+.btn-cancelada  { color: #C62828 !important; border-color: #C62828 !important; }
+.btn-finalizada { color: #1565C0 !important; border-color: #1565C0 !important; }
+
+.sin-acciones { color: #999; }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.sin-datos {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+th.mat-header-cell {
+  background: #f5f7fa;
+  font-weight: 600;
+  color: #333;
+}

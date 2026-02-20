@@ -1,0 +1,90 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Pacientes</h2>
+      <p>Lista de todos los pacientes registrados</p>
+    </div>
+    <div class="busqueda-container">
+      <mat-icon>search</mat-icon>
+      <input
+        class="busqueda-input"
+        placeholder="Buscar por nombre o email..."
+        [(ngModel)]="busqueda"
+        (ngModelChange)="filtrar()">
+    </div>
+  </div>
+
+  <!-- Contador -->
+  <div class="contador">
+    <mat-icon>people</mat-icon>
+    <span>{{ pacientesFiltrados.length }} paciente(s) encontrado(s)</span>
+  </div>
+
+  <!-- Tabla -->
+  <mat-card class="tabla-card">
+    @if (cargando) {
+      <div class="spinner-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else {
+      <table mat-table [dataSource]="pacientesFiltrados" class="tabla">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Paciente</th>
+          <td mat-cell *matCellDef="let p">
+            <div class="paciente-nombre">
+              <div class="avatar">{{ p.nombre.charAt(0) }}{{ p.apellidos.charAt(0) }}</div>
+              <div>
+                <p class="nombre">{{ p.nombre }} {{ p.apellidos }}</p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let p">
+            <div class="email-cell">
+              <mat-icon>email</mat-icon>
+              {{ p.email }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+          <td mat-cell *matCellDef="let p">{{ p.telefono || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="grupoSanguineo">
+          <th mat-header-cell *matHeaderCellDef>Grupo Sanguíneo</th>
+          <td mat-cell *matCellDef="let p">
+            @if (p.grupoSanguineo) {
+              <span class="grupo-badge">{{ p.grupoSanguineo }}</span>
+            } @else {
+              <span class="sin-dato">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaNacimiento">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Nacimiento</th>
+          <td mat-cell *matCellDef="let p">
+            {{ p.fechaNacimiento ? (p.fechaNacimiento | date:'dd/MM/yyyy') : '—' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell sin-datos" colspan="5">
+            No se encontraron pacientes
+          </td>
+        </tr>
+      </table>
+    }
+  </mat-card>
+
+</div>

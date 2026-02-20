@@ -1,0 +1,38 @@
+import { Component, inject } from '@angular/core';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-admin-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule, RouterOutlet, RouterLink, RouterLinkActive,
+    MatSidenavModule, MatToolbarModule, MatListModule,
+    MatIconModule, MatButtonModule
+  ],
+  templateUrl: './admin-dashboard.component.html',
+  styleUrl: './admin-dashboard.component.css'
+})
+export class AdminDashboardComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  usuario = this.authService.getUsuario();
+
+  menuItems = [
+    { label: 'Especialidades', icon: 'medical_services', ruta: '/admin/especialidades' },
+    { label: 'Médicos',        icon: 'stethoscope',      ruta: '/admin/medicos' },
+    { label: 'Citas',          icon: 'calendar_month',   ruta: '/admin/citas' },
+    { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' }
+  ];
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}

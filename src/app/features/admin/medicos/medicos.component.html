@@ -1,0 +1,125 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Médicos</h2>
+      <p>Gestiona los médicos del sistema</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="mostrarFormulario = true">
+      <mat-icon>add</mat-icon> Nuevo Médico
+    </button>
+  </div>
+
+  @if (mostrarFormulario) {
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Registrar Médico</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <!-- Aviso importante -->
+        <div class="info-box">
+          <mat-icon>info</mat-icon>
+          <span>El usuario debe estar registrado previamente. Ingresa su ID de usuario.</span>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>CMP (Código de Matrícula)</mat-label>
+            <input matInput formControlName="cmp">
+            @if (form.get('cmp')?.hasError('required') && form.get('cmp')?.touched) {
+              <mat-error>El CMP es requerido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Especialidad</mat-label>
+            <mat-select formControlName="especialidadId">
+              @for (esp of especialidades; track esp.id) {
+                <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+              }
+            </mat-select>
+            @if (form.get('especialidadId')?.hasError('required') && form.get('especialidadId')?.touched) {
+              <mat-error>Selecciona una especialidad</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ID de Usuario</mat-label>
+            <input matInput formControlName="usuarioId" type="number">
+            <mat-hint>ID del usuario registrado en el sistema</mat-hint>
+            @if (form.get('usuarioId')?.hasError('required') && form.get('usuarioId')?.touched) {
+              <mat-error>El ID de usuario es requerido</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-stroked-button type="button" (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit">
+              <mat-icon>save</mat-icon> Registrar Médico
+            </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Tabla -->
+  <mat-card class="tabla-card">
+    @if (cargando) {
+      <div class="spinner-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else {
+      <table mat-table [dataSource]="medicos" class="tabla">
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let m">
+            <div class="medico-nombre">
+              <mat-icon>account_circle</mat-icon>
+              Dr/Dra. {{ m.nombre }} {{ m.apellidos }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cmp">
+          <th mat-header-cell *matHeaderCellDef>CMP</th>
+          <td mat-cell *matCellDef="let m">{{ m.cmp }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="especialidad">
+          <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+          <td mat-cell *matCellDef="let m">
+            <span class="especialidad-badge">{{ m.especialidadNombre }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+          <td mat-cell *matCellDef="let m">{{ m.telefono || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let m">{{ m.email }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell sin-datos" colspan="5">No hay médicos registrados</td>
+        </tr>
+      </table>
+    }
+  </mat-card>
+
+</div>
