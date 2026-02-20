@@ -1,0 +1,86 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Mi Perfil</h2>
+      <p>Completa tus datos médicos para agendar citas</p>
+    </div>
+  </div>
+
+  @if (cargando) {
+    <div class="spinner-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+
+    <!-- Tarjeta de datos del usuario -->
+    <mat-card class="usuario-card">
+      <mat-card-content>
+        <div class="usuario-info">
+          <div class="avatar-grande">
+            {{ usuario?.nombre?.charAt(0) }}{{ usuario?.apellidos?.charAt(0) }}
+          </div>
+          <div>
+            <h3>{{ usuario?.nombre }} {{ usuario?.apellidos }}</h3>
+            <p>{{ usuario?.email }}</p>
+            @if (tienePerfil && perfil?.grupoSanguineo) {
+              <span class="grupo-badge">{{ perfil?.grupoSanguineo }}</span>
+            }
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Formulario de datos médicos -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ tienePerfil ? 'Actualizar Datos Médicos' : 'Completar Perfil Médico' }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Grupo Sanguíneo</mat-label>
+            <input matInput formControlName="grupoSanguineo" placeholder="Ej: O+, A-, B+">
+            <mat-icon matSuffix>bloodtype</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <input matInput formControlName="fechaNacimiento" type="date">
+            <mat-icon matSuffix>cake</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="direccion">
+            <mat-icon matSuffix>home</mat-icon>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="guardando">
+              @if (guardando) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                <ng-container>
+                  <mat-icon>save</mat-icon>
+                  {{ tienePerfil ? 'Actualizar' : 'Guardar Perfil' }}
+                </ng-container>
+              }
+            </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+</div>

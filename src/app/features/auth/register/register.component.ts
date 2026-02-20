@@ -37,19 +37,18 @@ export class RegisterComponent {
   ocultarPassword = true;
 
   submit(): void {
-    if (this.form.invalid) return;
-    this.cargando = true;
-    this.errorMensaje = '';
+  if (this.form.invalid) return;
+  this.cargando = true;
+  this.errorMensaje = '';
 
-    this.authService.register(this.form.value as any).subscribe({
-      next: () => {
-        // El registro siempre crea PACIENTE → va al dashboard de paciente
-        this.router.navigate(['/paciente/dashboard']);
-      },
-      error: (err) => {
-        this.errorMensaje = err.error?.mensaje || 'Error al registrarse';
-        this.cargando = false;
-      }
-    });
-  }
+  this.authService.register(this.form.value as any).subscribe({
+    next: () => {
+      this.router.navigate(['/paciente']); // ✅ Antes era /paciente/dashboard
+    },
+    error: (err) => {
+      this.errorMensaje = err.error?.mensaje || 'Error al registrarse';
+      this.cargando = false;
+    }
+  });
+}
 }

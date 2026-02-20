@@ -1,0 +1,72 @@
+.page-container { max-width: 900px; margin: 0 auto; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 { margin: 0; color: #1565C0; font-size: 1.6rem; }
+.page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
+
+.citas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.cita-card { border-radius: 12px !important; }
+
+.cita-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.cita-body { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.info-row mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; color: #1565C0; }
+
+.cita-footer { margin-top: 1rem; display: flex; justify-content: flex-end; }
+
+.estado-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-pendiente  { background: #FFF3E0; color: #E65100; }
+.estado-confirmada { background: #E8F5E9; color: #2E7D32; }
+.estado-cancelada  { background: #FFEBEE; color: #C62828; }
+.estado-finalizada { background: #E3F2FD; color: #1565C0; }
+
+.sin-citas {
+  text-align: center;
+  padding: 4rem;
+  color: #999;
+}
+
+.sin-citas mat-icon { font-size: 4rem; width: 4rem; height: 4rem; margin-bottom: 1rem; }
+.sin-citas h3 { margin: 0; color: #555; }
+.sin-citas p  { margin: 0.5rem 0 1.5rem; }
+
+.spinner-container { display: flex; justify-content: center; padding: 3rem; }

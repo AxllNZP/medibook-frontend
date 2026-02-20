@@ -1,0 +1,77 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Mi Perfil</h2>
+    <p>Datos profesionales registrados en el sistema</p>
+  </div>
+
+  @if (cargando) {
+    <div class="spinner-container"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else if (!perfil) {
+    <div class="sin-perfil">
+      <mat-icon>warning</mat-icon>
+      <h3>Perfil médico no encontrado</h3>
+      <p>Contacta al administrador para registrar tu perfil</p>
+    </div>
+  } @else {
+    <!-- Avatar y nombre -->
+    <mat-card class="avatar-card">
+      <mat-card-content>
+        <div class="avatar-section">
+          <div class="avatar">
+            {{ perfil.nombre.charAt(0) }}{{ perfil.apellidos.charAt(0) }}
+          </div>
+          <div>
+            <h3>Dr/Dra. {{ perfil.nombre }} {{ perfil.apellidos }}</h3>
+            <span class="especialidad-badge">{{ perfil.especialidadNombre }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Datos profesionales -->
+    <mat-card class="datos-card">
+      <mat-card-header>
+        <mat-card-title>Datos Profesionales</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="datos-grid">
+
+          <div class="dato-item">
+            <mat-icon>badge</mat-icon>
+            <div>
+              <p class="dato-label">CMP</p>
+              <p class="dato-valor">{{ perfil.cmp }}</p>
+            </div>
+          </div>
+
+          <div class="dato-item">
+            <mat-icon>medical_services</mat-icon>
+            <div>
+              <p class="dato-label">Especialidad</p>
+              <p class="dato-valor">{{ perfil.especialidadNombre }}</p>
+            </div>
+          </div>
+
+          <div class="dato-item">
+            <mat-icon>email</mat-icon>
+            <div>
+              <p class="dato-label">Email</p>
+              <p class="dato-valor">{{ perfil.email }}</p>
+            </div>
+          </div>
+
+          <div class="dato-item">
+            <mat-icon>phone</mat-icon>
+            <div>
+              <p class="dato-label">Teléfono</p>
+              <p class="dato-valor">{{ perfil.telefono || 'No registrado' }}</p>
+            </div>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+</div>

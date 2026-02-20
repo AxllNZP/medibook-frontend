@@ -1,0 +1,39 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="sidenav-header">
+      <mat-icon class="logo-icon">local_hospital</mat-icon>
+      <span class="logo-text">MediBook</span>
+      <span class="rol-badge">Médico</span>
+    </div>
+
+    <mat-nav-list>
+      @for (item of menuItems; track item.ruta) {
+        <a mat-list-item
+           [routerLink]="item.ruta"
+           routerLinkActive="active-link">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <div class="sidenav-footer">
+      <div class="usuario-info">
+        <mat-icon>account_circle</mat-icon>
+        <div>
+          <p class="usuario-nombre">Dr/Dra. {{ usuario?.nombre }} {{ usuario?.apellidos }}</p>
+          <p class="usuario-email">{{ usuario?.email }}</p>
+        </div>
+      </div>
+      <button mat-stroked-button (click)="logout()" class="btn-logout">
+        <mat-icon>logout</mat-icon> Cerrar Sesión
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <router-outlet />
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -1,0 +1,111 @@
+.page-container { max-width: 900px; margin: 0 auto; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 { margin: 0; color: #1B5E20; font-size: 1.6rem; }
+.page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
+
+.filtro-container { display: flex; align-items: center; gap: 0.5rem; color: #666; }
+
+.filtro-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Resumen */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.resumen-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  color: white;
+}
+
+.resumen-card.pendiente  { background: #F57C00; }
+.resumen-card.confirmada { background: #2E7D32; }
+.resumen-card.finalizada { background: #1565C0; }
+.resumen-card.cancelada  { background: #C62828; }
+
+.num { margin: 0; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.lbl { margin: 0; font-size: 0.85rem; opacity: 0.9; }
+
+/* Lista de citas */
+.citas-lista { display: flex; flex-direction: column; gap: 1rem; }
+
+.cita-card { border-radius: 12px !important; }
+
+.cita-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+}
+
+.fecha mat-icon { color: #1B5E20; font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
+
+.cita-body { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.info-row mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; color: #1B5E20; }
+.motivo { font-style: italic; color: #777; }
+
+.cita-acciones {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Estado badges */
+.estado-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-pendiente  { background: #FFF3E0; color: #E65100; }
+.estado-confirmada { background: #E8F5E9; color: #2E7D32; }
+.estado-cancelada  { background: #FFEBEE; color: #C62828; }
+.estado-finalizada { background: #E3F2FD; color: #1565C0; }
+
+/* Botones de acción */
+.btn-confirmada { color: #2E7D32 !important; border-color: #2E7D32 !important; }
+.btn-cancelada  { color: #C62828 !important; border-color: #C62828 !important; }
+.btn-finalizada { color: #1565C0 !important; border-color: #1565C0 !important; }
+
+.sin-citas { text-align: center; padding: 3rem; color: #999; }
+.sin-citas mat-icon { font-size: 3rem; width: 3rem; height: 3rem; }
+
+.spinner-container { display: flex; justify-content: center; padding: 3rem; }

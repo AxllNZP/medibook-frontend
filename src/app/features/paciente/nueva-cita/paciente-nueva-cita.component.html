@@ -1,0 +1,82 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Nueva Cita</h2>
+      <p>Agenda una cita con el médico de tu elección</p>
+    </div>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Datos de la Cita</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+
+        <!-- Paso 1: Filtrar por especialidad (opcional) -->
+        <mat-form-field appearance="outline">
+          <mat-label>Especialidad (opcional)</mat-label>
+          <mat-select formControlName="especialidadId"
+                      (selectionChange)="filtrarMedicos($event.value)">
+            <mat-option [value]="null">Todas las especialidades</mat-option>
+            @for (esp of especialidades; track esp.id) {
+              <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+            }
+          </mat-select>
+          <mat-hint>Filtra los médicos por especialidad</mat-hint>
+        </mat-form-field>
+
+        <!-- Paso 2: Seleccionar médico -->
+        <mat-form-field appearance="outline">
+          <mat-label>Médico</mat-label>
+          <mat-select formControlName="medicoId">
+            @for (m of medicosFiltrados; track m.id) {
+              <mat-option [value]="m.id">
+                Dr/Dra. {{ m.nombre }} {{ m.apellidos }} — {{ m.especialidadNombre }}
+              </mat-option>
+            }
+          </mat-select>
+          @if (form.get('medicoId')?.hasError('required') && form.get('medicoId')?.touched) {
+            <mat-error>Selecciona un médico</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Paso 3: Fecha y hora -->
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha y Hora</mat-label>
+          <input matInput formControlName="fechaHora"
+                 type="datetime-local"
+                 [min]="fechaMinima">
+          <mat-icon matSuffix>schedule</mat-icon>
+          @if (form.get('fechaHora')?.hasError('required') && form.get('fechaHora')?.touched) {
+            <mat-error>La fecha es requerida</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Motivo (opcional) -->
+        <mat-form-field appearance="outline">
+          <mat-label>Motivo de consulta (opcional)</mat-label>
+          <textarea matInput formControlName="motivo" rows="3"></textarea>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-stroked-button type="button" routerLink="/paciente/mis-citas">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="guardando">
+            @if (guardando) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              <ng-container>
+                <mat-icon>check_circle</mat-icon> Confirmar Cita
+              </ng-container>
+            }
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

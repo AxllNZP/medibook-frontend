@@ -36,25 +36,25 @@ export class LoginComponent {
   ocultarPassword = true;
 
   submit(): void {
-    if (this.form.invalid) return;
-    this.cargando = true;
-    this.errorMensaje = '';
+  if (this.form.invalid) return;
+  this.cargando = true;
+  this.errorMensaje = '';
 
-    this.authService.login(this.form.value as any).subscribe({
-      next: (response) => {
-        // Redirigir según rol
-        if (response.roles.includes('ROLE_ADMIN')) {
-          this.router.navigate(['/admin/dashboard']);
-        } else if (response.roles.includes('ROLE_MEDICO')) {
-          this.router.navigate(['/medico/dashboard']);
-        } else {
-          this.router.navigate(['/paciente/dashboard']);
-        }
-      },
-      error: (err) => {
-        this.errorMensaje = err.error?.mensaje || 'Error al iniciar sesión';
-        this.cargando = false;
+  this.authService.login(this.form.value as any).subscribe({
+    next: (response) => {
+      // ✅ Rutas corregidas — sin /dashboard
+      if (response.roles.includes('ROLE_ADMIN')) {
+        this.router.navigate(['/admin']);
+      } else if (response.roles.includes('ROLE_MEDICO')) {
+        this.router.navigate(['/medico']);
+      } else {
+        this.router.navigate(['/paciente']);
       }
-    });
-  }
+    },
+    error: (err) => {
+      this.errorMensaje = err.error?.mensaje || 'Error al iniciar sesión';
+      this.cargando = false;
+    }
+  });
+}
 }

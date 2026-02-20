@@ -1,0 +1,104 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Mis Citas</h2>
+      <p>Citas médicas asignadas a tu agenda</p>
+    </div>
+    <div class="filtro-container">
+      <mat-icon>filter_list</mat-icon>
+      <select [(ngModel)]="filtroEstado" (ngModelChange)="aplicarFiltro()" class="filtro-select">
+        <option value="TODOS">Todos</option>
+        @for (e of estados; track e) {
+          <option [value]="e">{{ e }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Tarjetas resumen -->
+  <div class="resumen-grid">
+    <div class="resumen-card pendiente">
+      <mat-icon>schedule</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'PENDIENTE' }}</p>
+        <p class="lbl">Pendientes</p>
+      </div>
+    </div>
+    <div class="resumen-card confirmada">
+      <mat-icon>check_circle</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'CONFIRMADA' }}</p>
+        <p class="lbl">Confirmadas</p>
+      </div>
+    </div>
+    <div class="resumen-card finalizada">
+      <mat-icon>task_alt</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'FINALIZADA' }}</p>
+        <p class="lbl">Finalizadas</p>
+      </div>
+    </div>
+    <div class="resumen-card cancelada">
+      <mat-icon>cancel</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'CANCELADA' }}</p>
+        <p class="lbl">Canceladas</p>
+      </div>
+    </div>
+  </div>
+
+  @if (cargando) {
+    <div class="spinner-container"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else if (citasFiltradas.length === 0) {
+    <div class="sin-citas">
+      <mat-icon>event_busy</mat-icon>
+      <h3>No hay citas en este estado</h3>
+    </div>
+  } @else {
+    <div class="citas-lista">
+      @for (cita of citasFiltradas; track cita.id) {
+        <mat-card class="cita-card">
+          <mat-card-content>
+            <div class="cita-header">
+              <div class="fecha">
+                <mat-icon>calendar_today</mat-icon>
+                <strong>{{ cita.fechaHora | date:'EEEE dd/MM/yyyy':'':'es' }}</strong>
+                <span>{{ cita.fechaHora | date:'HH:mm' }}</span>
+              </div>
+              <span class="estado-badge" [ngClass]="colorEstado(cita.estado)">
+                {{ cita.estado }}
+              </span>
+            </div>
+
+            <div class="cita-body">
+              <div class="info-row">
+                <mat-icon>person</mat-icon>
+                <span>{{ cita.pacienteNombre }}</span>
+              </div>
+              @if (cita.motivo) {
+                <div class="info-row motivo">
+                  <mat-icon>notes</mat-icon>
+                  <span>{{ cita.motivo }}</span>
+                </div>
+              }
+            </div>
+
+            @if (estadosDisponibles(cita.estado).length > 0) {
+              <div class="cita-acciones">
+                @for (estado of estadosDisponibles(cita.estado); track estado) {
+                  <button mat-stroked-button
+                          [ngClass]="'btn-' + estado.toLowerCase()"
+                          (click)="cambiarEstado(cita, estado)">
+                    {{ estado }}
+                  </button>
+                }
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
+</div>

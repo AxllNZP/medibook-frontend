@@ -1,0 +1,63 @@
+.page-container { max-width: 700px; margin: 0 auto; }
+
+.page-header { margin-bottom: 1.5rem; }
+.page-header h2 { margin: 0; color: #1B5E20; font-size: 1.6rem; }
+.page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
+
+.avatar-card { border-radius: 12px !important; margin-bottom: 1.5rem; }
+
+.avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem;
+}
+
+.avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #1B5E20;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.avatar-section h3 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+
+.especialidad-badge {
+  background: #E8F5E9;
+  color: #1B5E20;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.datos-card { border-radius: 12px !important; }
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+.dato-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.dato-item mat-icon { color: #1B5E20; margin-top: 2px; }
+
+.dato-label { margin: 0; font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+.dato-valor { margin: 0.2rem 0 0; font-size: 1rem; color: #333; font-weight: 500; }
+
+.sin-perfil { text-align: center; padding: 3rem; color: #999; }
+.sin-perfil mat-icon { font-size: 3rem; width: 3rem; height: 3rem; color: #E65100; }
+
+.spinner-container { display: flex; justify-content: center; padding: 3rem; }

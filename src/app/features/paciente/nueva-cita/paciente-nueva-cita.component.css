@@ -1,0 +1,25 @@
+.page-container { max-width: 700px; margin: 0 auto; }
+
+.page-header { margin-bottom: 1.5rem; }
+.page-header h2 { margin: 0; color: #1565C0; font-size: 1.6rem; }
+.page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
+
+.form-card { border-radius: 12px !important; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.form-grid mat-form-field:last-of-type {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
