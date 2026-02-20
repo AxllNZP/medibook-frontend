@@ -43,7 +43,7 @@ export class RegisterComponent {
 
   this.authService.register(this.form.value as any).subscribe({
     next: () => {
-      this.router.navigate(['/paciente']); // ✅ Antes era /paciente/dashboard
+      this.router.navigate(['/paciente']);
     },
     error: (err) => {
       this.errorMensaje = err.error?.mensaje || 'Error al registrarse';

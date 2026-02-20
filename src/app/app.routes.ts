@@ -97,7 +97,7 @@ export const routes: Routes = [
       {
         path: 'citas',
         loadComponent: () =>
-          import('./features/admin/citas/admin-citas.component')
+          import('./features/citas/admin-citas.component')
             .then(m => m.AdminCitasComponent)
       },
       {

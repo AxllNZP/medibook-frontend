@@ -11,16 +11,18 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EspecialidadService } from '../../../core/services/especialidad.service';
 import { EspecialidadResponse } from '../../../core/models/especialidad.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-especialidades',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule,
-    MatTableModule, MatButtonModule, MatIconModule,
-    MatInputModule, MatCardModule, MatDialogModule,
-    MatSnackBarModule, MatProgressSpinnerModule
-  ],
+  CommonModule, ReactiveFormsModule,
+  MatTableModule, MatButtonModule, MatIconModule,
+  MatInputModule, MatCardModule, MatDialogModule,
+  MatSnackBarModule, MatProgressSpinnerModule,
+  MatTooltipModule
+],
   templateUrl: './especialidades.component.html',
   styleUrl: './especialidades.component.css'
 })

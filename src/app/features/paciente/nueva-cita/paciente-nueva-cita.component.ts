@@ -20,11 +20,11 @@ import { RouterLink } from '@angular/router';
   selector: 'app-paciente-nueva-cita',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule,
-    MatCardModule, MatInputModule, MatButtonModule,
-    MatIconModule, MatSelectModule,
-    MatSnackBarModule, MatProgressSpinnerModule
-  ],
+  CommonModule, ReactiveFormsModule, RouterLink,
+  MatCardModule, MatInputModule, MatButtonModule,
+  MatIconModule, MatSelectModule,
+  MatSnackBarModule, MatProgressSpinnerModule
+],
   templateUrl: './paciente-nueva-cita.component.html',
   styleUrl: './paciente-nueva-cita.component.css'
 })
