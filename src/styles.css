@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+/* Snackbar global de error */
+.snack-error {
+  background-color: #c62828 !important;
+  color: white !important;
+}
+
+.snack-error .mat-mdc-button {
+  color: white !important;
+}
+
+/* Snackbar global de éxito */
+.snack-ok {
+  background-color: #2E7D32 !important;
+  color: white !important;
+}
+
+.snack-ok .mat-mdc-button {
+  color: white !important;
+}

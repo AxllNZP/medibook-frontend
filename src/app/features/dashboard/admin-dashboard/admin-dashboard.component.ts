@@ -24,12 +24,14 @@ export class AdminDashboardComponent {
   private router = inject(Router);
   usuario = this.authService.getUsuario();
 
-  menuItems = [
-    { label: 'Especialidades', icon: 'medical_services', ruta: '/admin/especialidades' },
-    { label: 'Médicos',        icon: 'stethoscope',      ruta: '/admin/medicos' },
-    { label: 'Citas',          icon: 'calendar_month',   ruta: '/admin/citas' },
-    { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' }
-  ];
+  // IMPLEMENTACION DE ICONOS Y RUTAS EN EL SIDENAV
+menuItems = [
+  { label: 'Inicio',         icon: 'dashboard',        ruta: '/admin' },
+  { label: 'Especialidades', icon: 'medical_services', ruta: '/admin/especialidades' },
+  { label: 'Médicos',        icon: 'stethoscope',      ruta: '/admin/medicos' },
+  { label: 'Citas',          icon: 'calendar_month',   ruta: '/admin/citas' },
+  { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' }
+];
 
   logout() {
     this.authService.logout();

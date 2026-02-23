@@ -1,0 +1,101 @@
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-forbidden',
+  standalone: true,
+  imports: [MatButtonModule, MatIconModule],
+  template: `
+    <div class="forbidden-container">
+      <div class="forbidden-card">
+        <div class="error-icon">
+          <mat-icon>lock</mat-icon>
+        </div>
+        <h1>403</h1>
+        <h2>Acceso Denegado</h2>
+        <p>No tienes permisos para acceder a esta sección.</p>
+        <button mat-raised-button color="primary" (click)="volver()">
+          <mat-icon>home</mat-icon>
+          Volver a mi panel
+        </button>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .forbidden-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f7fa;
+    }
+
+    .forbidden-card {
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      max-width: 400px;
+    }
+
+    .error-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ffebee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .error-icon mat-icon {
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      color: #c62828;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #c62828;
+      margin: 0;
+      line-height: 1;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #333;
+      margin: 0.5rem 0;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+  `]
+})
+export class ForbiddenComponent {
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  volver() {
+    const usuario = this.authService.getUsuario();
+    if (!usuario) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    if (usuario.roles.includes('ROLE_ADMIN')) {
+      this.router.navigate(['/admin']);
+    } else if (usuario.roles.includes('ROLE_MEDICO')) {
+      this.router.navigate(['/medico']);
+    } else {
+      this.router.navigate(['/paciente']);
+    }
+  }
+}

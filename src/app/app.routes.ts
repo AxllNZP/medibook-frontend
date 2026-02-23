@@ -25,7 +25,13 @@ export const routes: Routes = [
       import('./features/dashboard/paciente-dashboard/paciente-dashboard.component')
         .then(m => m.PacienteDashboardComponent),
     children: [
-      { path: '', redirectTo: 'mis-citas', pathMatch: 'full' },
+      // IMPLEMENTACION DE RUTAS HIJAS PARA EL PACIENTE
+{
+  path: '',
+  loadComponent: () =>
+    import('./features/paciente/home/paciente-home.component')
+      .then(m => m.PacienteHomeComponent)
+},
       {
         path: 'mis-citas',
         loadComponent: () =>
@@ -81,7 +87,13 @@ export const routes: Routes = [
       import('./features/dashboard/admin-dashboard/admin-dashboard.component')
         .then(m => m.AdminDashboardComponent),
     children: [
-      { path: '', redirectTo: 'especialidades', pathMatch: 'full' },
+      // ✅ DESPUÉS
+{
+  path: '',
+  loadComponent: () =>
+    import('./features/admin/home/admin-home.component')
+      .then(m => m.AdminHomeComponent)
+},
       {
         path: 'especialidades',
         loadComponent: () =>
@@ -108,6 +120,18 @@ export const routes: Routes = [
       }
     ]
   },
+  {
+  path: '403',
+  loadComponent: () =>
+    import('./features/errors/forbidden/forbidden.component')
+      .then(m => m.ForbiddenComponent)
+},
 
-  { path: '**', redirectTo: 'login' }
+  // IMPORTANTE: esta ruta siempre al final, para capturar cualquier URL no definida
+{
+  path: '**',
+  loadComponent: () =>
+    import('./features/errors/not-found/not-found.component')
+      .then(m => m.NotFoundComponent)
+}
 ];

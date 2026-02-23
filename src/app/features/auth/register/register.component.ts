@@ -36,14 +36,21 @@ export class RegisterComponent {
   errorMensaje = '';
   ocultarPassword = true;
 
-  submit(): void {
+  // SIEMPRE CREARA PACIENTE, PERO EN LA PRACTICA SE PODRIA DAR LA OPCION DE REGISTRARSE COMO MEDICO (CON UN CODIGO O ALGO ASI)
+submit(): void {
   if (this.form.invalid) return;
   this.cargando = true;
   this.errorMensaje = '';
 
   this.authService.register(this.form.value as any).subscribe({
-    next: () => {
-      this.router.navigate(['/paciente']);
+    next: (response) => {
+      if (response.roles.includes('ROLE_ADMIN')) {
+        this.router.navigate(['/admin']);
+      } else if (response.roles.includes('ROLE_MEDICO')) {
+        this.router.navigate(['/medico']);
+      } else {
+        this.router.navigate(['/paciente']);
+      }
     },
     error: (err) => {
       this.errorMensaje = err.error?.mensaje || 'Error al registrarse';

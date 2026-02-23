@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     return true;
   }
 
-  // Logueado pero sin el rol correcto → dashboard
-  router.navigate(['/dashboard']);
+// Logueado con el rol incorrecto, redirige a 403
+  router.navigate(['/403']);
   return false;
 };

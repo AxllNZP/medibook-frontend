@@ -22,11 +22,13 @@ export class PacienteDashboardComponent {
   private router = inject(Router);
   usuario = this.authService.getUsuario();
 
-  menuItems = [
-    { label: 'Mi Perfil',  icon: 'account_circle', ruta: '/paciente/perfil' },
-    { label: 'Mis Citas',  icon: 'calendar_month', ruta: '/paciente/mis-citas' },
-    { label: 'Nueva Cita', icon: 'add_circle',      ruta: '/paciente/nueva-cita' }
-  ];
+  // IMPLEMENTACION DE ICONOS Y RUTAS EN EL SIDENAV
+menuItems = [
+  { label: 'Inicio',     icon: 'dashboard',      ruta: '/paciente' },
+  { label: 'Mi Perfil',  icon: 'account_circle', ruta: '/paciente/perfil' },
+  { label: 'Mis Citas',  icon: 'calendar_month', ruta: '/paciente/mis-citas' },
+  { label: 'Nueva Cita', icon: 'add_circle',      ruta: '/paciente/nueva-cita' }
+];
 
   logout() {
     this.authService.logout();
