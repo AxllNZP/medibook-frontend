@@ -12,6 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EspecialidadService } from '../../../core/services/especialidad.service';
 import { EspecialidadResponse } from '../../../core/models/especialidad.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-especialidades',
@@ -30,6 +32,7 @@ export class EspecialidadesComponent implements OnInit {
   private especialidadService = inject(EspecialidadService);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   especialidades: EspecialidadResponse[] = [];
   columnas = ['nombre', 'descripcion', 'acciones'];
@@ -94,8 +97,19 @@ export class EspecialidadesComponent implements OnInit {
     });
   }
 
-  eliminar(id: number) {
-    if (!confirm('¿Estás seguro de eliminar esta especialidad?')) return;
+  // MEJORA DE DIALOGOS DE CONFIRMACION PARA ELIMINAR
+eliminar(id: number) {
+  const ref = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      titulo: 'Eliminar Especialidad',
+      mensaje: '¿Estás seguro? Esta acción no se puede deshacer.',
+      textoConfirmar: 'Eliminar',
+      tipo: 'danger'
+    }
+  });
+
+  ref.afterClosed().subscribe(confirmado => {
+    if (!confirmado) return;
     this.especialidadService.eliminar(id).subscribe({
       next: () => {
         this.mostrarMensaje('Especialidad eliminada', 'ok');
@@ -103,7 +117,8 @@ export class EspecialidadesComponent implements OnInit {
       },
       error: (err) => this.mostrarMensaje(err.error?.mensaje || 'Error al eliminar', 'error')
     });
-  }
+  });
+}
 
   cancelar() {
     this.mostrarFormulario = false;

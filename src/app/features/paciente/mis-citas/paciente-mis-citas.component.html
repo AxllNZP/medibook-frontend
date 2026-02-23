@@ -27,9 +27,8 @@
         <mat-card class="cita-card">
           <mat-card-content>
             <div class="cita-header">
-              <span class="estado-badge" [ngClass]="colorEstado(cita.estado)">
-                {{ cita.estado }}
-              </span>
+              <!-- ✅ DESPUÉS -->
+                  <app-estado-badge [estado]="cita.estado" />
               <span class="fecha">
                 <mat-icon>calendar_today</mat-icon>
                 {{ cita.fechaHora | date:'dd/MM/yyyy HH:mm' }}

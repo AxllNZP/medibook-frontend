@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CitaService } from '../../core/services/cita.service';
 import { CitaResponse, EstadoCita } from '../../core/models/cita.model';
 import { CitasPorEstadoPipe } from '../../core/pipes/citas-por-estado.pipe';
+import { EstadoBadgeComponent } from '../../shared/estado-badge/estado-badge.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { CitasPorEstadoPipe } from '../../core/pipes/citas-por-estado.pipe';
     MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatSelectModule, MatSnackBarModule,
     MatProgressSpinnerModule, MatChipsModule,
-    CitasPorEstadoPipe
+    CitasPorEstadoPipe,EstadoBadgeComponent
 ],
   templateUrl: './admin-citas.component.html',
   styleUrl: './admin-citas.component.css'

@@ -10,6 +10,7 @@ import { MedicoService } from '../../../core/services/medico.service';
 import { CitaService } from '../../../core/services/cita.service';
 import { CitaResponse, EstadoCita } from '../../../core/models/cita.model';
 import { CitasPorEstadoPipe } from '../../../core/pipes/citas-por-estado.pipe';
+import { EstadoBadgeComponent } from '../../../shared/estado-badge/estado-badge.component';
 
 @Component({
   selector: 'app-medico-mis-citas',
@@ -18,7 +19,7 @@ import { CitasPorEstadoPipe } from '../../../core/pipes/citas-por-estado.pipe';
     CommonModule, FormsModule,
     MatCardModule, MatButtonModule, MatIconModule,
     MatSnackBarModule, MatProgressSpinnerModule,
-    CitasPorEstadoPipe
+    CitasPorEstadoPipe,EstadoBadgeComponent
   ],
   templateUrl: './medico-mis-citas.component.html',
   styleUrl: './medico-mis-citas.component.css'

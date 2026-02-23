@@ -66,9 +66,8 @@
                 <strong>{{ cita.fechaHora | date:'EEEE dd/MM/yyyy':'':'es' }}</strong>
                 <span>{{ cita.fechaHora | date:'HH:mm' }}</span>
               </div>
-              <span class="estado-badge" [ngClass]="colorEstado(cita.estado)">
-                {{ cita.estado }}
-              </span>
+              <!-- ✅ DESPUÉS -->
+                <app-estado-badge [estado]="cita.estado" />
             </div>
 
             <div class="cita-body">
