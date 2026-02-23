@@ -28,4 +28,23 @@ export class MedicoService {
   crear(request: MedicoRequest): Observable<MedicoResponse> {
   return this.http.post<MedicoResponse>(this.url, request);
 }
+crearCompleto(request: {
+  nombre: string;
+  apellidos: string;
+  email: string;
+  password: string;
+  cmp: string;
+  telefono: string;
+  especialidadId: number;
+}): Observable<MedicoResponse> {
+  return this.http.post<MedicoResponse>(`${this.url}/crear-completo`, request);
+}
+
+actualizar(id: number, request: MedicoRequest): Observable<MedicoResponse> {
+  return this.http.put<MedicoResponse>(`${this.url}/${id}`, request);
+}
+
+eliminar(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.url}/${id}`);
+}
 }

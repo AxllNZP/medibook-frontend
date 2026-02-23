@@ -9,10 +9,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MedicoService } from '../../../core/services/medico.service';
 import { EspecialidadService } from '../../../core/services/especialidad.service';
 import { MedicoResponse } from '../../../core/models/medico.model';
 import { EspecialidadResponse } from '../../../core/models/especialidad.model';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-medicos',
@@ -21,30 +25,44 @@ import { EspecialidadResponse } from '../../../core/models/especialidad.model';
     CommonModule, ReactiveFormsModule,
     MatTableModule, MatButtonModule, MatIconModule,
     MatInputModule, MatCardModule, MatSelectModule,
-    MatSnackBarModule, MatProgressSpinnerModule
+    MatSnackBarModule, MatProgressSpinnerModule,
+    MatDividerModule, MatTooltipModule, MatDialogModule
   ],
   templateUrl: './medicos.component.html',
   styleUrl: './medicos.component.css'
 })
 export class MedicosComponent implements OnInit {
-  private medicoService = inject(MedicoService);
+  private medicoService       = inject(MedicoService);
   private especialidadService = inject(EspecialidadService);
-  private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private fb                  = inject(FormBuilder);
+  private snackBar            = inject(MatSnackBar);
+  private dialog              = inject(MatDialog);
 
-  medicos: MedicoResponse[] = [];
+  medicos: MedicoResponse[]            = [];
   especialidades: EspecialidadResponse[] = [];
-  columnas = ['nombre', 'cmp', 'especialidad', 'telefono', 'email'];
-  cargando = false;
+  columnas = ['nombre', 'cmp', 'especialidad', 'telefono', 'email', 'acciones'];
+  cargando          = false;
   mostrarFormulario = false;
+  guardando         = false;
+  ocultarPassword   = true;
+  editandoId: number | null = null;  // null = crear, number = editar
 
-  // El admin necesita: CMP, teléfono, especialidad, y el usuarioId
-  // El usuarioId viene del email — buscamos al usuario por email
-  form = this.fb.group({
-    cmp:           ['', Validators.required],
-    telefono:      [''],
-    especialidadId: [null as number | null, Validators.required],
-    usuarioId:     [null as number | null, Validators.required]
+  // Formulario de CREACIÓN (datos usuario + médico)
+  formCrear = this.fb.group({
+    nombre:         ['', Validators.required],
+    apellidos:      ['', Validators.required],
+    email:          ['', [Validators.required, Validators.email]],
+    password:       ['', [Validators.required, Validators.minLength(8)]],
+    cmp:            ['', Validators.required],
+    telefono:       [''],
+    especialidadId: [null as number | null, Validators.required]
+  });
+
+  // Formulario de EDICIÓN (solo datos médico, no usuario)
+  formEditar = this.fb.group({
+    cmp:            ['', Validators.required],
+    telefono:       [''],
+    especialidadId: [null as number | null, Validators.required]
   });
 
   ngOnInit() {
@@ -66,24 +84,100 @@ export class MedicosComponent implements OnInit {
     });
   }
 
-  guardar() {
-    if (this.form.invalid) return;
-    const datos = this.form.value as any;
+  abrirFormularioCrear() {
+    this.editandoId = null;
+    this.formCrear.reset();
+    this.ocultarPassword = true;
+    this.mostrarFormulario = true;
+  }
 
-    this.medicoService.crear(datos).subscribe({
+  abrirFormularioEditar(medico: MedicoResponse) {
+    this.editandoId = medico.id;
+    this.formEditar.patchValue({
+      cmp:            medico.cmp,
+      telefono:       medico.telefono || '',
+      especialidadId: medico.especialidadId
+    });
+    this.mostrarFormulario = true;
+  }
+
+  guardar() {
+    if (this.editandoId) {
+      this.guardarEdicion();
+    } else {
+      this.guardarCreacion();
+    }
+  }
+
+  private guardarCreacion() {
+    if (this.formCrear.invalid) return;
+    this.guardando = true;
+
+    this.medicoService.crearCompleto(this.formCrear.value as any).subscribe({
       next: () => {
-        this.mostrarMensaje('Médico creado exitosamente', 'ok');
-        this.mostrarFormulario = false;
-        this.form.reset();
+        this.mostrarMensaje('Médico registrado exitosamente', 'ok');
+        this.cancelar();
         this.cargarMedicos();
+        this.guardando = false;
       },
-      error: (err) => this.mostrarMensaje(err.error?.mensaje || 'Error al crear médico', 'error')
+      error: (err) => {
+        this.mostrarMensaje(err.error?.mensaje || 'Error al crear médico', 'error');
+        this.guardando = false;
+      }
+    });
+  }
+
+  private guardarEdicion() {
+    if (this.formEditar.invalid) return;
+    this.guardando = true;
+
+    const datos = {
+      ...this.formEditar.value,
+      usuarioId: this.medicos.find(m => m.id === this.editandoId)?.usuarioId
+    };
+
+    this.medicoService.actualizar(this.editandoId!, datos as any).subscribe({
+      next: () => {
+        this.mostrarMensaje('Médico actualizado correctamente', 'ok');
+        this.cancelar();
+        this.cargarMedicos();
+        this.guardando = false;
+      },
+      error: (err) => {
+        this.mostrarMensaje(err.error?.mensaje || 'Error al actualizar', 'error');
+        this.guardando = false;
+      }
+    });
+  }
+
+  eliminar(medico: MedicoResponse) {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        titulo: 'Eliminar Médico',
+        mensaje: `¿Eliminar a Dr/Dra. ${medico.nombre} ${medico.apellidos}? Esta acción no se puede deshacer.`,
+        textoConfirmar: 'Eliminar',
+        tipo: 'danger'
+      }
+    });
+
+    ref.afterClosed().subscribe(confirmado => {
+      if (!confirmado) return;
+      this.medicoService.eliminar(medico.id).subscribe({
+        next: () => {
+          this.mostrarMensaje('Médico eliminado', 'ok');
+          this.cargarMedicos();
+        },
+        error: (err) => this.mostrarMensaje(err.error?.mensaje || 'Error al eliminar', 'error')
+      });
     });
   }
 
   cancelar() {
     this.mostrarFormulario = false;
-    this.form.reset();
+    this.editandoId = null;
+    this.formCrear.reset();
+    this.formEditar.reset();
+    this.ocultarPassword = true;
   }
 
   private mostrarMensaje(mensaje: string, tipo: 'ok' | 'error') {
