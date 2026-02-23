@@ -1,0 +1,110 @@
+<div class="home-container">
+
+  <!-- Saludo -->
+  <div class="bienvenida">
+    <h2>Hola, {{ usuario?.nombre }} 👋</h2>
+    <p>Este es el resumen de tus citas médicas</p>
+  </div>
+
+  @if (cargando) {
+    <div class="spinner-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+
+    <!-- Tarjetas resumen -->
+    <div class="stats-grid">
+      <div class="estado-card pendiente">
+        <mat-icon>schedule</mat-icon>
+        <p class="estado-num">{{ contar('PENDIENTE') }}</p>
+        <p class="estado-lbl">Pendientes</p>
+      </div>
+      <div class="estado-card confirmada">
+        <mat-icon>check_circle</mat-icon>
+        <p class="estado-num">{{ contar('CONFIRMADA') }}</p>
+        <p class="estado-lbl">Confirmadas</p>
+      </div>
+      <div class="estado-card finalizada">
+        <mat-icon>task_alt</mat-icon>
+        <p class="estado-num">{{ contar('FINALIZADA') }}</p>
+        <p class="estado-lbl">Finalizadas</p>
+      </div>
+      <div class="estado-card cancelada">
+        <mat-icon>cancel</mat-icon>
+        <p class="estado-num">{{ contar('CANCELADA') }}</p>
+        <p class="estado-lbl">Canceladas</p>
+      </div>
+    </div>
+
+    <!-- Próxima cita -->
+    <mat-card class="proxima-card">
+      <mat-card-header>
+        <mat-card-title>Próxima Cita</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (proximaCita) {
+          <div class="proxima-info">
+            <div class="proxima-fecha">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ proximaCita.fechaHora | date:'EEEE dd/MM/yyyy HH:mm':'':'es' }}</span>
+            </div>
+
+            <div class="proxima-detalle">
+              <div class="info-row">
+                <mat-icon>person</mat-icon>
+                <span>Dr/Dra. {{ proximaCita.medicoNombre }}</span>
+              </div>
+              <div class="info-row">
+                <mat-icon>medical_services</mat-icon>
+                <span>{{ proximaCita.especialidad }}</span>
+              </div>
+
+              @if (proximaCita.motivo) {
+                <div class="info-row">
+                  <mat-icon>notes</mat-icon>
+                  <span>{{ proximaCita.motivo }}</span>
+                </div>
+              }
+            </div>
+
+            <app-estado-badge [estado]="proximaCita.estado" />
+          </div>
+        } @else {
+          <div class="sin-cita">
+            <mat-icon>event_busy</mat-icon>
+            <p>No tienes citas próximas</p>
+            <button mat-raised-button color="primary" routerLink="/paciente/nueva-cita">
+              <mat-icon>add</mat-icon> Agendar ahora
+            </button>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Accesos rápidos -->
+    <div class="accesos-grid">
+      <mat-card class="acceso-card" routerLink="/paciente/nueva-cita">
+        <mat-card-content>
+          <mat-icon>add_circle</mat-icon>
+          <p>Nueva Cita</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="acceso-card" routerLink="/paciente/mis-citas">
+        <mat-card-content>
+          <mat-icon>calendar_month</mat-icon>
+          <p>Mis Citas</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="acceso-card" routerLink="/paciente/perfil">
+        <mat-card-content>
+          <mat-icon>account_circle</mat-icon>
+          <p>Mi Perfil</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  }
+</div>

@@ -16,11 +16,12 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 @Component({
   selector: 'app-paciente-mis-citas',
   standalone: true,
-  imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatButtonModule, MatIconModule,
-    MatSnackBarModule, MatProgressSpinnerModule,EstadoBadgeComponent
-  ],
+imports: [
+  CommonModule, RouterLink,
+  MatCardModule, MatButtonModule, MatIconModule,
+  MatSnackBarModule, MatProgressSpinnerModule,
+  MatDialogModule, EstadoBadgeComponent
+],
   templateUrl: './paciente-mis-citas.component.html',
   styleUrl: './paciente-mis-citas.component.css'
 })
