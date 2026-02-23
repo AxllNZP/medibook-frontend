@@ -28,7 +28,7 @@ export class AdminDashboardComponent {
 menuItems = [
   { label: 'Inicio',         icon: 'dashboard',        ruta: '/admin' },
   { label: 'Especialidades', icon: 'medical_services', ruta: '/admin/especialidades' },
-  { label: 'Médicos',        icon: 'stethoscope',      ruta: '/admin/medicos' },
+  { label: 'Médicos',        icon: 'monitor_heart',    ruta: '/admin/medicos' },
   { label: 'Citas',          icon: 'calendar_month',   ruta: '/admin/citas' },
   { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' }
 ];

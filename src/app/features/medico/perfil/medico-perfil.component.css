@@ -61,3 +61,40 @@
 .sin-perfil mat-icon { font-size: 3rem; width: 3rem; height: 3rem; color: #E65100; }
 
 .spinner-container { display: flex; justify-content: center; padding: 3rem; }
+
+
+.avatar-section {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.avatar-info {
+  flex: 1;
+}
+
+.btn-editar {
+  margin-left: auto;
+}
+
+.form-card {
+  border-radius: 12px !important;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.full-col {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}

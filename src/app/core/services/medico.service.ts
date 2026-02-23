@@ -47,4 +47,9 @@ actualizar(id: number, request: MedicoRequest): Observable<MedicoResponse> {
 eliminar(id: number): Observable<void> {
   return this.http.delete<void>(`${this.url}/${id}`);
 }
+actualizarMiPerfil(request: { cmp: string; telefono: string; especialidadId: number }): Observable<MedicoResponse> {
+    // usuarioId no se necesita — el backend lo saca del JWT
+    return this.http.put<MedicoResponse>(`${this.url}/mi-perfil`, request);
+}
+
 }

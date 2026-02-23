@@ -7,13 +7,73 @@
 
   @if (cargando) {
     <div class="spinner-container"><mat-spinner diameter="40"></mat-spinner></div>
+
   } @else if (!perfil) {
     <div class="sin-perfil">
       <mat-icon>warning</mat-icon>
       <h3>Perfil médico no encontrado</h3>
       <p>Contacta al administrador para registrar tu perfil</p>
     </div>
+
+  } @else if (editando) {
+
+    <!-- ===== MODO EDICIÓN ===== -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Editar Perfil</mat-card-title>
+        <mat-card-subtitle>Modifica tus datos profesionales</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>CMP</mat-label>
+            <input matInput formControlName="cmp">
+            <mat-icon matSuffix>badge</mat-icon>
+            @if (form.get('cmp')?.hasError('required') && form.get('cmp')?.touched) {
+              <mat-error>El CMP es requerido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-col">
+            <mat-label>Especialidad</mat-label>
+            <mat-select formControlName="especialidadId">
+              @for (esp of especialidades; track esp.id) {
+                <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+              }
+            </mat-select>
+            @if (form.get('especialidadId')?.hasError('required') && form.get('especialidadId')?.touched) {
+              <mat-error>Selecciona una especialidad</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-stroked-button type="button" (click)="cancelarEdicion()">
+              <mat-icon>close</mat-icon> Cancelar
+            </button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="guardando">
+              @if (guardando) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                <ng-container><mat-icon>save</mat-icon> Guardar Cambios</ng-container>
+              }
+            </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
   } @else {
+
+    <!-- ===== MODO LECTURA ===== -->
+
     <!-- Avatar y nombre -->
     <mat-card class="avatar-card">
       <mat-card-content>
@@ -21,10 +81,14 @@
           <div class="avatar">
             {{ perfil.nombre.charAt(0) }}{{ perfil.apellidos.charAt(0) }}
           </div>
-          <div>
+          <div class="avatar-info">
             <h3>Dr/Dra. {{ perfil.nombre }} {{ perfil.apellidos }}</h3>
             <span class="especialidad-badge">{{ perfil.especialidadNombre }}</span>
           </div>
+          <!-- Botón de editar en la esquina -->
+          <button mat-raised-button color="primary" (click)="iniciarEdicion()" class="btn-editar">
+            <mat-icon>edit</mat-icon> Editar Perfil
+          </button>
         </div>
       </mat-card-content>
     </mat-card>
