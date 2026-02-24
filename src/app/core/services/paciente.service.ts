@@ -30,4 +30,8 @@ export class PacienteService {
   listarTodos(): Observable<PacienteResponse[]> {
   return this.http.get<PacienteResponse[]>(this.url);
 }
+
+historialCompleto(pacienteId: number): Observable<CitaResponse[]> {
+  return this.http.get<CitaResponse[]>(`${this.url}/${pacienteId}/historial`);
+}
 }
