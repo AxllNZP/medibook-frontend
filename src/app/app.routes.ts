@@ -94,6 +94,12 @@ export const routes: Routes = [
     import('./features/admin/home/admin-home.component')
       .then(m => m.AdminHomeComponent)
 },
+{
+  path: 'usuarios',
+  loadComponent: () =>
+    import('./features/admin/usuarios/admin-usuarios.component')
+      .then(m => m.AdminUsuariosComponent)
+},
       {
         path: 'especialidades',
         loadComponent: () =>

@@ -52,4 +52,9 @@ export class AuthService {
     localStorage.setItem('token', response.token);
     localStorage.setItem('usuario', JSON.stringify(response));
   }
+
+//Crear ADMINISTRADOR
+crearAdmin(request: RegisterRequest): Observable<AuthResponse> {
+  return this.http.post<AuthResponse>(`${this.url}/crear-admin`, request);
+}
 }

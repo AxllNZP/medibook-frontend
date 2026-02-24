@@ -30,7 +30,8 @@ menuItems = [
   { label: 'Especialidades', icon: 'medical_services', ruta: '/admin/especialidades' },
   { label: 'Médicos',        icon: 'monitor_heart',    ruta: '/admin/medicos' },
   { label: 'Citas',          icon: 'calendar_month',   ruta: '/admin/citas' },
-  { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' }
+  { label: 'Pacientes',      icon: 'people',           ruta: '/admin/pacientes' },
+  { label: 'Administradores', icon: 'admin_panel_settings', ruta: '/admin/usuarios' }
 ];
 
   logout() {
