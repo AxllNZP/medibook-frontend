@@ -22,10 +22,11 @@ export class MedicoDashboardComponent {
   private router = inject(Router);
   usuario = this.authService.getUsuario();
 
-  menuItems = [
-    { label: 'Mis Citas', icon: 'calendar_month', ruta: '/medico/mis-citas' },
-    { label: 'Mi Perfil', icon: 'account_circle', ruta: '/medico/perfil' }
-  ];
+menuItems = [
+  { label: 'Mis Citas',        icon: 'calendar_month',      ruta: '/medico/mis-citas' },
+  { label: 'Historial Médico', icon: 'folder_shared',       ruta: '/medico/historial' },
+  { label: 'Mi Perfil',        icon: 'account_circle',      ruta: '/medico/perfil'    }
+];
 
   logout() {
     this.authService.logout();

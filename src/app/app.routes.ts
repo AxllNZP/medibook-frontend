@@ -74,6 +74,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/medico/perfil/medico-perfil.component')
             .then(m => m.MedicoPerfilComponent)
+      },
+      {
+        path: 'historial',
+        loadComponent: () =>
+          import('./features/medico/historial/medico-historial.component')
+            .then(m => m.MedicoHistorialComponent)
       }
     ]
   },

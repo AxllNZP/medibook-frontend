@@ -5,6 +5,7 @@ import { MedicoResponse } from '../models/medico.model';
 import { CitaResponse } from '../models/cita.model';
 import { environment } from '../../../environments/environment';
 import { MedicoRequest } from '../models/medico.model';
+import { PacienteResponse } from '../models/paciente.model';
 
 @Injectable({ providedIn: 'root' })
 export class MedicoService {
@@ -50,6 +51,14 @@ eliminar(id: number): Observable<void> {
 actualizarMiPerfil(request: { cmp: string; telefono: string; especialidadId: number }): Observable<MedicoResponse> {
     // usuarioId no se necesita — el backend lo saca del JWT
     return this.http.put<MedicoResponse>(`${this.url}/mi-perfil`, request);
+}
+
+misPacientes(): Observable<PacienteResponse[]> {
+  return this.http.get<PacienteResponse[]>(`${this.url}/mis-pacientes`);
+}
+
+historialPaciente(pacienteId: number): Observable<CitaResponse[]> {
+  return this.http.get<CitaResponse[]>(`${this.url}/historial/${pacienteId}`);
 }
 
 }
