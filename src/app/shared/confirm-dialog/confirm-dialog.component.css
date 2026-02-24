@@ -1,0 +1,43 @@
+.dialog-container {
+  padding: 1rem;
+  text-align: center;
+  max-width: 360px;
+}
+
+.dialog-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.dialog-icon mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon-danger  { background: #ffebee; color: #c62828; }
+.icon-warning { background: #fff3e0; color: #e65100; }
+.icon-info    { background: #e3f2fd; color: #1565c0; }
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+mat-dialog-content p {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 1.5rem !important;
+}

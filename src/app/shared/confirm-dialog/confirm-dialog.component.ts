@@ -1,3 +1,5 @@
+// src/app/shared/confirm-dialog/confirm-dialog.component.ts
+
 import { Component, Inject } from '@angular/core';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,72 +18,8 @@ export interface ConfirmDialogData {
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
-  template: `
-    <div class="dialog-container">
-      <div class="dialog-icon" [ngClass]="'icon-' + data.tipo">
-        <mat-icon>{{ getIcono() }}</mat-icon>
-      </div>
-
-      <h2 mat-dialog-title>{{ data.titulo }}</h2>
-
-      <mat-dialog-content>
-        <p>{{ data.mensaje }}</p>
-      </mat-dialog-content>
-
-      <mat-dialog-actions>
-        <button mat-stroked-button (click)="cancelar()">
-          {{ data.textoCancelar || 'Cancelar' }}
-        </button>
-        <button mat-raised-button
-                [color]="getColor()"
-                (click)="confirmar()">
-          {{ data.textoConfirmar || 'Confirmar' }}
-        </button>
-      </mat-dialog-actions>
-    </div>
-  `,
-  styles: [`
-    .dialog-container {
-      padding: 1rem;
-      text-align: center;
-      max-width: 360px;
-    }
-
-    .dialog-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1rem;
-    }
-
-    .dialog-icon mat-icon {
-      font-size: 2rem;
-      width: 2rem;
-      height: 2rem;
-    }
-
-    .icon-danger  { background: #ffebee; color: #c62828; }
-    .icon-warning { background: #fff3e0; color: #e65100; }
-    .icon-info    { background: #e3f2fd; color: #1565c0; }
-
-    h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
-
-    mat-dialog-content p {
-      color: #666;
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    mat-dialog-actions {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      padding-top: 1.5rem !important;
-    }
-  `]
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.css']
 })
 export class ConfirmDialogComponent {
   constructor(
@@ -92,14 +30,23 @@ export class ConfirmDialogComponent {
   }
 
   getIcono(): string {
-    const iconos = { danger: 'delete', warning: 'warning', info: 'info' };
+    const iconos: Record<string, string> = {
+      danger: 'delete',
+      warning: 'warning',
+      info: 'info'
+    };
     return iconos[this.data.tipo!];
   }
 
-  getColor(): string {
+  getColor(): 'primary' | 'warn' {
     return this.data.tipo === 'danger' ? 'warn' : 'primary';
   }
 
-  confirmar() { this.dialogRef.close(true); }
-  cancelar()  { this.dialogRef.close(false); }
+  confirmar(): void {
+    this.dialogRef.close(true);
+  }
+
+  cancelar(): void {
+    this.dialogRef.close(false);
+  }
 }

@@ -1,0 +1,25 @@
+<div class="dialog-container">
+  <div class="dialog-icon" [ngClass]="'icon-' + data.tipo">
+    <mat-icon>{{ getIcono() }}</mat-icon>
+  </div>
+
+  <h2 mat-dialog-title>{{ data.titulo }}</h2>
+
+  <mat-dialog-content>
+    <p>{{ data.mensaje }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-stroked-button (click)="cancelar()">
+      {{ data.textoCancelar || 'Cancelar' }}
+    </button>
+
+    <button
+      mat-raised-button
+      [color]="getColor()"
+      (click)="confirmar()"
+    >
+      {{ data.textoConfirmar || 'Confirmar' }}
+    </button>
+  </mat-dialog-actions>
+</div>
