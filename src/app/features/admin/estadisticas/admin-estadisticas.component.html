@@ -1,0 +1,225 @@
+<div class="page-container">
+
+  <!-- Encabezado -->
+  <div class="page-header">
+    <div>
+      <h2>Estadísticas</h2>
+      <p>Análisis de citas, no-shows y distribución de tiempos</p>
+    </div>
+    <button class="btn-refresh" (click)="cargarEstadisticas()">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  @if (cargando) {
+    <div class="spinner-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (datos) {
+
+    <!-- ── Tarjetas de totales ─────────────────────────────── -->
+    <div class="totales-grid">
+
+      <mat-card class="total-card">
+        <mat-card-content>
+          <div class="total-inner">
+            <div class="total-icon" style="background:#e3f2fd">
+              <mat-icon style="color:#1565C0">calendar_month</mat-icon>
+            </div>
+            <div>
+              <p class="total-num">{{ datos.totalCitas }}</p>
+              <p class="total-lbl">Total Citas</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="total-card">
+        <mat-card-content>
+          <div class="total-inner">
+            <div class="total-icon" style="background:#e8f5e9">
+              <mat-icon style="color:#2E7D32">task_alt</mat-icon>
+            </div>
+            <div>
+              <p class="total-num">{{ datos.finalizadas }}</p>
+              <p class="total-lbl">Finalizadas</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="total-card">
+        <mat-card-content>
+          <div class="total-inner">
+            <div class="total-icon" style="background:#ffebee">
+              <mat-icon style="color:#C62828">person_off</mat-icon>
+            </div>
+            <div>
+              <p class="total-num">{{ datos.noShows }}</p>
+              <p class="total-lbl">No-Shows</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="total-card">
+        <mat-card-content>
+          <div class="total-inner">
+            <div class="total-icon" style="background:#fff3e0">
+              <mat-icon style="color:#E65100">schedule</mat-icon>
+            </div>
+            <div>
+              <p class="total-num">{{ datos.promedioAnticiapacionDias }}</p>
+              <p class="total-lbl">Días de anticipación (prom.)</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <!-- ── Sección No-Shows ───────────────────────────────── -->
+    <mat-card class="seccion-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>person_off</mat-icon>
+        <mat-card-title>Análisis de No-Shows</mat-card-title>
+        <mat-card-subtitle>
+          Citas con fecha pasada que siguen en estado PENDIENTE o CONFIRMADA
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="noshow-grid">
+
+          <!-- Indicador principal -->
+          <div class="noshow-indicador" [style.border-color]="colorNoShow()">
+            <p class="noshow-pct" [style.color]="colorNoShow()">
+              {{ datos.porcentajeNoShow }}%
+            </p>
+            <p class="noshow-lbl">Tasa de No-Show</p>
+            <div class="noshow-detalle">
+              <span>{{ datos.noShows }} no-shows</span>
+              <span>de {{ datos.totalCitas }} citas totales</span>
+            </div>
+          </div>
+
+          <!-- Semáforo de salud -->
+          <div class="semaforo">
+            <p class="semaforo-titulo">¿Cómo está la tasa?</p>
+
+            <div class="semaforo-item" [class.activo]="datos.porcentajeNoShow < 10">
+              <div class="semaforo-punto verde"></div>
+              <div>
+                <p class="semaforo-label">Saludable</p>
+                <p class="semaforo-desc">Menos del 10% — Excelente gestión</p>
+              </div>
+            </div>
+
+            <div class="semaforo-item" [class.activo]="datos.porcentajeNoShow >= 10 && datos.porcentajeNoShow < 20">
+              <div class="semaforo-punto naranja"></div>
+              <div>
+                <p class="semaforo-label">Atención</p>
+                <p class="semaforo-desc">Entre 10% y 20% — Requiere seguimiento</p>
+              </div>
+            </div>
+
+            <div class="semaforo-item" [class.activo]="datos.porcentajeNoShow >= 20">
+              <div class="semaforo-punto rojo"></div>
+              <div>
+                <p class="semaforo-label">Crítico</p>
+                <p class="semaforo-desc">Más del 20% — Acción inmediata</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+    <!-- ── Distribución por día de la semana ─────────────── -->
+    <div class="dos-columnas">
+
+      <mat-card class="seccion-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>calendar_view_week</mat-icon>
+          <mat-card-title>Citas por Día</mat-card-title>
+          <mat-card-subtitle>Distribución semanal</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+          @if (diasConCitas.length === 0) {
+            <div class="sin-datos">
+              <mat-icon>event_busy</mat-icon>
+              <p>Sin datos suficientes</p>
+            </div>
+          } @else {
+            <div class="barras-lista">
+              @for (item of diasConCitas; track item.dia) {
+                <div class="barra-item">
+                  <div class="barra-header">
+                    <span class="barra-label">{{ item.dia | titlecase }}</span>
+                    <strong>{{ item.cantidad }}</strong>
+                  </div>
+                  <mat-progress-bar
+                    mode="determinate"
+                    [value]="item.porcentaje"
+                    style="--mdc-linear-progress-active-indicator-color: #1565C0;
+                           --mdc-linear-progress-track-color: #e3f2fd">
+                  </mat-progress-bar>
+                </div>
+              }
+            </div>
+          }
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- ── Distribución por hora del día ─────────────────── -->
+      <mat-card class="seccion-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>access_time</mat-icon>
+          <mat-card-title>Citas por Hora</mat-card-title>
+          <mat-card-subtitle>Distribución horaria</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+          @if (horasConCitas.length === 0) {
+            <div class="sin-datos">
+              <mat-icon>schedule</mat-icon>
+              <p>Sin datos suficientes</p>
+            </div>
+          } @else {
+            <div class="barras-lista">
+              @for (item of horasConCitas; track item.hora) {
+                <div class="barra-item">
+                  <div class="barra-header">
+                    <span class="barra-label">{{ item.hora }}</span>
+                    <strong>{{ item.cantidad }}</strong>
+                  </div>
+                  <mat-progress-bar
+                    mode="determinate"
+                    [value]="item.porcentaje"
+                    style="--mdc-linear-progress-active-indicator-color: #2E7D32;
+                           --mdc-linear-progress-track-color: #e8f5e9">
+                  </mat-progress-bar>
+                </div>
+              }
+            </div>
+          }
+
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+  } @else {
+    <div class="sin-datos-global">
+      <mat-icon>bar_chart</mat-icon>
+      <h3>No se pudieron cargar las estadísticas</h3>
+      <p>Intenta actualizar la página</p>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,282 @@
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Encabezado ─────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1565C0;
+  font-size: 1.6rem;
+}
+
+.page-header p {
+  margin: 0.25rem 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #555;
+  transition: box-shadow 0.2s;
+}
+
+.btn-refresh:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* ── Tarjetas de totales ────────────────────────────────── */
+.totales-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.total-card {
+  border-radius: 12px !important;
+}
+
+.total-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.total-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.total-icon mat-icon {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.total-num {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.total-lbl {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* ── Secciones generales ────────────────────────────────── */
+.seccion-card {
+  border-radius: 12px !important;
+  margin-bottom: 1.5rem;
+}
+
+/* ── No-Shows ───────────────────────────────────────────── */
+.noshow-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.noshow-indicador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 3px solid;
+  text-align: center;
+}
+
+.noshow-pct {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.noshow-lbl {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.noshow-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* ── Semáforo ───────────────────────────────────────────── */
+.semaforo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.semaforo-titulo {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.semaforo-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+
+.semaforo-item.activo {
+  opacity: 1;
+  background: #fafafa;
+  border-color: #e0e0e0;
+}
+
+.semaforo-punto {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.verde   { background: #2E7D32; }
+.naranja { background: #E65100; }
+.rojo    { background: #C62828; }
+
+.semaforo-label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.semaforo-desc {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* ── Dos columnas ───────────────────────────────────────── */
+.dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* ── Barras de distribución ─────────────────────────────── */
+.barras-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.barra-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.barra-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.barra-label {
+  color: #555;
+  font-weight: 500;
+}
+
+mat-progress-bar {
+  height: 8px !important;
+  border-radius: 4px;
+}
+
+/* ── Estados vacíos ─────────────────────────────────────── */
+.sin-datos {
+  text-align: center;
+  padding: 2rem;
+  color: #bbb;
+}
+
+.sin-datos mat-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sin-datos p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.sin-datos-global {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #999;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.sin-datos-global mat-icon {
+  font-size: 3.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.sin-datos-global h3 {
+  margin: 0;
+  color: #555;
+}
+
+.sin-datos-global p {
+  margin: 0.5rem 0 0;
+}
+
+/* ── Spinner ────────────────────────────────────────────── */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}

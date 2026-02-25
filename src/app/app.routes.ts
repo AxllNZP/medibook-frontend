@@ -125,11 +125,17 @@ export const routes: Routes = [
             .then(m => m.AdminCitasComponent)
       },
       {
-        path: 'pacientes',
-        loadComponent: () =>
-          import('./features/admin/pacientes/admin-pacientes.component')
-            .then(m => m.AdminPacientesComponent)
-      }
+  path: 'pacientes',
+  loadComponent: () =>
+    import('./features/admin/pacientes/admin-pacientes.component')
+      .then(m => m.AdminPacientesComponent)
+},
+{
+  path: 'estadisticas',
+  loadComponent: () =>
+    import('./features/admin/estadisticas/admin-estadisticas.component')
+      .then(m => m.AdminEstadisticasComponent)
+}
     ]
   },
   {
