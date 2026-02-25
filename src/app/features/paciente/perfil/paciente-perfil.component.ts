@@ -32,6 +32,8 @@ export class PacientePerfilComponent implements OnInit {
   cargando = false;
   guardando = false;
   tienePerfil = false;
+  porcentajePerfil = 0;
+  camposCompletitud: { label: string; completado: boolean; icono: string }[] = [];
 
   form = this.fb.group({
     telefono: [''],
@@ -52,6 +54,7 @@ export class PacientePerfilComponent implements OnInit {
       next: (data) => {
         this.perfil = data;
         this.tienePerfil = true;
+        this.calcularCompletitud(data);
         // Formateamos la fecha para el input date (yyyy-MM-dd)
         const fecha = data.fechaNacimiento
           ? new Date(data.fechaNacimiento).toISOString().split('T')[0]
@@ -93,4 +96,31 @@ export class PacientePerfilComponent implements OnInit {
       }
     });
   }
+  calcularCompletitud(data: PacienteResponse) {
+  this.camposCompletitud = [
+    {
+      label: 'Teléfono',
+      completado: !!data.telefono?.trim(),
+      icono: 'phone'
+    },
+    {
+      label: 'Fecha de nacimiento',
+      completado: !!data.fechaNacimiento,
+      icono: 'cake'
+    },
+    {
+      label: 'Grupo sanguíneo',
+      completado: !!data.grupoSanguineo?.trim(),
+      icono: 'bloodtype'
+    },
+    {
+      label: 'Dirección',
+      completado: !!data.direccion?.trim(),
+      icono: 'home'
+    }
+  ];
+
+  const completados = this.camposCompletitud.filter(c => c.completado).length;
+  this.porcentajePerfil = Math.round((completados / this.camposCompletitud.length) * 100);
+}
 }

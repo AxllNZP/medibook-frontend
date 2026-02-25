@@ -171,3 +171,12 @@
   justify-content: center;
   padding: 3rem;
 }
+
+.proxima-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.5rem;
+}

@@ -9,6 +9,10 @@ import { PacienteService } from '../../../core/services/paciente.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { CitaResponse } from '../../../core/models/cita.model';
 import { EstadoBadgeComponent } from '../../../shared/estado-badge/estado-badge.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { CitaService } from '../../../core/services/cita.service';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-paciente-home',
@@ -27,7 +31,10 @@ import { EstadoBadgeComponent } from '../../../shared/estado-badge/estado-badge.
 })
 export class PacienteHomeComponent implements OnInit {
   private pacienteService = inject(PacienteService);
-  private authService = inject(AuthService);
+  private citaService     = inject(CitaService);
+  private authService     = inject(AuthService);
+  private dialog          = inject(MatDialog);
+  private snackBar        = inject(MatSnackBar);
 
   usuario = this.authService.getUsuario();
   citas: CitaResponse[] = [];
@@ -69,4 +76,35 @@ export class PacienteHomeComponent implements OnInit {
   contar(estado: string): number {
     return this.citas.filter((c) => c.estado === estado).length;
   }
+
+  cancelarDesdeHome(id: number) {
+  const ref = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      titulo: 'Cancelar Cita',
+      mensaje: '¿Estás seguro de que deseas cancelar tu próxima cita?',
+      textoConfirmar: 'Sí, cancelar',
+      tipo: 'warning'
+    }
+  });
+
+  ref.afterClosed().subscribe(confirmado => {
+    if (!confirmado) return;
+    this.citaService.cancelarCita(id).subscribe({
+      next: () => {
+        this.snackBar.open('Cita cancelada correctamente', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snack-ok']
+        });
+        this.cargarCitas(); // recarga todo para actualizar el home
+      },
+      error: (err) => {
+        this.snackBar.open(
+          err.error?.mensaje || 'Error al cancelar',
+          'Cerrar',
+          { duration: 3000, panelClass: ['snack-error'] }
+        );
+      }
+    });
+  });
+}
 }

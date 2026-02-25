@@ -1,72 +1,67 @@
-.page-container { max-width: 900px; margin: 0 auto; }
-
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h2 { margin: 0; color: #1565C0; font-size: 1.6rem; }
-.page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
-
-.citas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1rem;
-}
-
-.cita-card { border-radius: 12px !important; }
-
-.cita-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.fecha {
+.header-acciones {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  color: #555;
+  gap: 1rem;
 }
 
-.cita-body { display: flex; flex-direction: column; gap: 0.5rem; }
-
-.info-row {
+.filtro-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: #666;
+}
+
+.filtro-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 0.9rem;
-  color: #444;
+  outline: none;
+  cursor: pointer;
+  background: white;
 }
 
-.info-row mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; color: #1565C0; }
+/* Resumen */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
 
-.cita-footer { margin-top: 1rem; display: flex; justify-content: flex-end; }
-
-.estado-badge {
-  padding: 4px 12px;
+.resumen-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
   border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
-.estado-pendiente  { background: #FFF3E0; color: #E65100; }
-.estado-confirmada { background: #E8F5E9; color: #2E7D32; }
-.estado-cancelada  { background: #FFEBEE; color: #C62828; }
-.estado-finalizada { background: #E3F2FD; color: #1565C0; }
-
-.sin-citas {
-  text-align: center;
-  padding: 4rem;
-  color: #999;
+.resumen-card:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.sin-citas mat-icon { font-size: 4rem; width: 4rem; height: 4rem; margin-bottom: 1rem; }
-.sin-citas h3 { margin: 0; color: #555; }
-.sin-citas p  { margin: 0.5rem 0 1.5rem; }
+.resumen-card.activo {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  outline: 3px solid white;
+}
 
-.spinner-container { display: flex; justify-content: center; padding: 3rem; }
+.resumen-card.pendiente  { background: #F57C00; }
+.resumen-card.confirmada { background: #2E7D32; }
+.resumen-card.finalizada { background: #1565C0; }
+.resumen-card.cancelada  { background: #C62828; }

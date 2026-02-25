@@ -13,14 +13,14 @@
     </div>
   } @else {
 
-    <!-- Tarjeta de datos del usuario -->
+    <!-- ── Tarjeta de datos del usuario ──────────────── -->
     <mat-card class="usuario-card">
       <mat-card-content>
         <div class="usuario-info">
           <div class="avatar-grande">
             {{ usuario?.nombre?.charAt(0) }}{{ usuario?.apellidos?.charAt(0) }}
           </div>
-          <div>
+          <div class="usuario-texto">
             <h3>{{ usuario?.nombre }} {{ usuario?.apellidos }}</h3>
             <p>{{ usuario?.email }}</p>
             @if (tienePerfil && perfil?.grupoSanguineo) {
@@ -31,12 +31,73 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Formulario de datos médicos -->
+    <!-- ── Indicador de completitud ──────────────────── -->
+    @if (tienePerfil) {
+      <mat-card class="completitud-card"
+                [class.completo]="porcentajePerfil === 100"
+                [class.incompleto]="porcentajePerfil < 100">
+        <mat-card-content>
+
+          <div class="completitud-header">
+            <div class="completitud-titulo">
+              <mat-icon>{{ porcentajePerfil === 100 ? 'verified' : 'pending' }}</mat-icon>
+              <span>{{ porcentajePerfil === 100 ? 'Perfil completo' : 'Perfil incompleto' }}</span>
+            </div>
+            <span class="porcentaje-texto">{{ porcentajePerfil }}%</span>
+          </div>
+
+          <!-- Barra de progreso -->
+          <div class="barra-contenedor">
+            <div class="barra-fondo">
+              <div class="barra-progreso"
+                   [style.width.%]="porcentajePerfil"
+                   [class.barra-completa]="porcentajePerfil === 100"
+                   [class.barra-media]="porcentajePerfil >= 50 && porcentajePerfil < 100"
+                   [class.barra-baja]="porcentajePerfil < 50">
+              </div>
+            </div>
+          </div>
+
+          <!-- Checklist de campos -->
+          <div class="campos-lista">
+            @for (campo of camposCompletitud; track campo.label) {
+              <div class="campo-item" [class.campo-ok]="campo.completado">
+                <div class="campo-icono-wrap"
+                     [class.icono-ok]="campo.completado"
+                     [class.icono-pendiente]="!campo.completado">
+                  <mat-icon>{{ campo.icono }}</mat-icon>
+                </div>
+                <span class="campo-nombre">{{ campo.label }}</span>
+                <mat-icon class="campo-estado-icono">
+                  {{ campo.completado ? 'check_circle' : 'radio_button_unchecked' }}
+                </mat-icon>
+              </div>
+            }
+          </div>
+
+          <!-- Mensaje si incompleto -->
+          @if (porcentajePerfil < 100) {
+            <div class="aviso-completar">
+              <mat-icon>info</mat-icon>
+              <span>Completa todos los campos para que el médico tenga tu información completa</span>
+            </div>
+          }
+
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- ── Formulario de datos médicos ───────────────── -->
     <mat-card class="form-card">
       <mat-card-header>
         <mat-card-title>
           {{ tienePerfil ? 'Actualizar Datos Médicos' : 'Completar Perfil Médico' }}
         </mat-card-title>
+        @if (!tienePerfil) {
+          <mat-card-subtitle>
+            Rellena tus datos para que el médico tenga tu información
+          </mat-card-subtitle>
+        }
       </mat-card-header>
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">

@@ -1,82 +1,302 @@
 <div class="page-container">
 
-  <div class="page-header">
-    <div>
-      <h2>Nueva Cita</h2>
-      <p>Agenda una cita con el médico de tu elección</p>
+  <!-- ── Pantalla de confirmación ──────────────────── -->
+  @if (citaConfirmada) {
+
+    <div class="confirmacion-container">
+
+      <!-- Icono animado -->
+      <div class="confirmacion-icono">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+
+      <h2 class="confirmacion-titulo">¡Cita agendada con éxito!</h2>
+      <p class="confirmacion-subtitulo">
+        Recibirás un email de confirmación en tu correo
+      </p>
+
+      <!-- Tarjeta con detalles -->
+      <mat-card class="confirmacion-card">
+        <mat-card-content>
+
+          <div class="detalle-titulo">
+            <mat-icon>assignment</mat-icon>
+            <span>Resumen de tu cita</span>
+          </div>
+
+          <div class="detalles-grid">
+
+            <div class="detalle-item">
+              <div class="detalle-icono">
+                <mat-icon>calendar_today</mat-icon>
+              </div>
+              <div>
+                <p class="detalle-label">Fecha y hora</p>
+                <p class="detalle-valor">
+                  {{ citaConfirmada.fechaHora | date:'EEEE dd/MM/yyyy' }}
+                  a las {{ citaConfirmada.fechaHora | date:'HH:mm' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="detalle-item">
+              <div class="detalle-icono">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div>
+                <p class="detalle-label">Médico</p>
+                <p class="detalle-valor">Dr/Dra. {{ citaConfirmada.medicoNombre }}</p>
+              </div>
+            </div>
+
+            <div class="detalle-item">
+              <div class="detalle-icono">
+                <mat-icon>medical_services</mat-icon>
+              </div>
+              <div>
+                <p class="detalle-label">Especialidad</p>
+                <p class="detalle-valor">{{ citaConfirmada.especialidad }}</p>
+              </div>
+            </div>
+
+            <div class="detalle-item">
+              <div class="detalle-icono">
+                <mat-icon>schedule</mat-icon>
+              </div>
+              <div>
+                <p class="detalle-label">Estado</p>
+                <p class="detalle-valor">
+                  <span class="estado-pendiente-badge">PENDIENTE</span>
+                </p>
+              </div>
+            </div>
+
+            @if (citaConfirmada.motivo) {
+              <div class="detalle-item detalle-full">
+                <div class="detalle-icono">
+                  <mat-icon>notes</mat-icon>
+                </div>
+                <div>
+                  <p class="detalle-label">Motivo</p>
+                  <p class="detalle-valor">{{ citaConfirmada.motivo }}</p>
+                </div>
+              </div>
+            }
+
+          </div>
+
+          <!-- Aviso email -->
+          <div class="aviso-email">
+            <mat-icon>email</mat-icon>
+            <span>
+              Se ha enviado un email de confirmación a tu correo registrado
+            </span>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Botones de acción -->
+      <div class="confirmacion-acciones">
+        <button mat-stroked-button (click)="agendarOtra()">
+          <mat-icon>add_circle</mat-icon>
+          Agendar otra cita
+        </button>
+        <button mat-raised-button color="primary" (click)="irAMisCitas()">
+          <mat-icon>calendar_month</mat-icon>
+          Ver mis citas
+        </button>
+      </div>
+
     </div>
-  </div>
 
-  <mat-card class="form-card">
-    <mat-card-header>
-      <mat-card-title>Datos de la Cita</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+  } @else {
 
-        <!-- Paso 1: Filtrar por especialidad (opcional) -->
-        <mat-form-field appearance="outline">
-          <mat-label>Especialidad (opcional)</mat-label>
-          <mat-select formControlName="especialidadId"
-                      (selectionChange)="filtrarMedicos($event.value)">
-            <mat-option [value]="null">Todas las especialidades</mat-option>
-            @for (esp of especialidades; track esp.id) {
-              <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
-            }
-          </mat-select>
-          <mat-hint>Filtra los médicos por especialidad</mat-hint>
-        </mat-form-field>
+    <!-- ── Formulario normal ────────────────────────── -->
+    <div class="page-header">
+      <div>
+        <h2>Nueva Cita</h2>
+        <p>Agenda una cita con el médico de tu elección</p>
+      </div>
+    </div>
 
-        <!-- Paso 2: Seleccionar médico -->
-        <mat-form-field appearance="outline">
-          <mat-label>Médico</mat-label>
-          <mat-select formControlName="medicoId">
-            @for (m of medicosFiltrados; track m.id) {
-              <mat-option [value]="m.id">
-                Dr/Dra. {{ m.nombre }} {{ m.apellidos }} — {{ m.especialidadNombre }}
-              </mat-option>
-            }
-          </mat-select>
-          @if (form.get('medicoId')?.hasError('required') && form.get('medicoId')?.touched) {
-            <mat-error>Selecciona un médico</mat-error>
-          }
-        </mat-form-field>
+    <div class="layout-grid" [class.con-medico]="medicoSeleccionado">
 
-        <!-- Paso 3: Fecha y hora -->
-        <mat-form-field appearance="outline">
-          <mat-label>Fecha y Hora</mat-label>
-          <input matInput formControlName="fechaHora"
-                 type="datetime-local"
-                 [min]="fechaMinima">
-          <mat-icon matSuffix>schedule</mat-icon>
-          @if (form.get('fechaHora')?.hasError('required') && form.get('fechaHora')?.touched) {
-            <mat-error>La fecha es requerida</mat-error>
-          }
-        </mat-form-field>
+      <!-- Formulario -->
+      <mat-card class="form-card">
+        <mat-card-header>
+          <mat-card-title>Datos de la Cita</mat-card-title>
+          <mat-card-subtitle>Completa los campos para agendar</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
 
-        <!-- Motivo (opcional) -->
-        <mat-form-field appearance="outline">
-          <mat-label>Motivo de consulta (opcional)</mat-label>
-          <textarea matInput formControlName="motivo" rows="3"></textarea>
-        </mat-form-field>
+            <div class="paso-label">
+              <div class="paso-numero">1</div>
+              <span>Filtra por especialidad (opcional)</span>
+            </div>
 
-        <div class="form-actions">
-          <button mat-stroked-button type="button" routerLink="/paciente/mis-citas">
-            Cancelar
-          </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="guardando">
-            @if (guardando) {
-              <mat-spinner diameter="20"></mat-spinner>
-            } @else {
-              <ng-container>
-                <mat-icon>check_circle</mat-icon> Confirmar Cita
-              </ng-container>
-            }
-          </button>
+            <mat-form-field appearance="outline" class="full-col">
+              <mat-label>Especialidad</mat-label>
+              <mat-select formControlName="especialidadId"
+                          (selectionChange)="filtrarMedicos($event.value)">
+                <mat-option [value]="null">Todas las especialidades</mat-option>
+                @for (esp of especialidades; track esp.id) {
+                  <mat-option [value]="esp.id">{{ esp.nombre }}</mat-option>
+                }
+              </mat-select>
+              <mat-icon matSuffix>medical_services</mat-icon>
+            </mat-form-field>
+
+            <div class="paso-label">
+              <div class="paso-numero">2</div>
+              <span>Selecciona tu médico</span>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-col">
+              <mat-label>Médico</mat-label>
+              <mat-select formControlName="medicoId"
+                          (selectionChange)="onMedicoChange($event.value)">
+                @if (medicosFiltrados.length === 0) {
+                  <mat-option disabled>No hay médicos disponibles</mat-option>
+                }
+                @for (m of medicosFiltrados; track m.id) {
+                  <mat-option [value]="m.id">
+                    Dr/Dra. {{ m.nombre }} {{ m.apellidos }} — {{ m.especialidadNombre }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-icon matSuffix>person</mat-icon>
+              @if (form.get('medicoId')?.hasError('required') && form.get('medicoId')?.touched) {
+                <mat-error>Selecciona un médico</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="paso-label">
+              <div class="paso-numero">3</div>
+              <span>Elige fecha y hora</span>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-col">
+              <mat-label>Fecha y Hora</mat-label>
+              <input matInput formControlName="fechaHora"
+                     type="datetime-local"
+                     [min]="fechaMinima">
+              <mat-icon matSuffix>schedule</mat-icon>
+              @if (form.get('fechaHora')?.hasError('required') && form.get('fechaHora')?.touched) {
+                <mat-error>La fecha es requerida</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="paso-label">
+              <div class="paso-numero">4</div>
+              <span>Motivo de consulta (opcional)</span>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-col">
+              <mat-label>Describe brevemente tu consulta</mat-label>
+              <textarea matInput formControlName="motivo" rows="3"
+                        placeholder="Ej: Dolor de cabeza frecuente, revisión general...">
+              </textarea>
+              <mat-icon matSuffix>notes</mat-icon>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-stroked-button type="button" routerLink="/paciente/mis-citas">
+                <mat-icon>arrow_back</mat-icon> Cancelar
+              </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="guardando">
+                @if (guardando) {
+                  <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                  <ng-container>
+                    <mat-icon>check_circle</mat-icon> Confirmar Cita
+                  </ng-container>
+                }
+              </button>
+            </div>
+
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Tarjeta del médico seleccionado -->
+      @if (medicoSeleccionado) {
+        <div class="medico-panel">
+
+          <div class="medico-panel-titulo">
+            <mat-icon>info</mat-icon>
+            <span>Médico seleccionado</span>
+          </div>
+
+          <mat-card class="medico-card">
+            <mat-card-content>
+
+              <div class="medico-avatar-section">
+                <div class="medico-avatar">
+                  {{ medicoSeleccionado.nombre.charAt(0) }}{{ medicoSeleccionado.apellidos.charAt(0) }}
+                </div>
+                <div>
+                  <h3 class="medico-nombre">
+                    Dr/Dra. {{ medicoSeleccionado.nombre }} {{ medicoSeleccionado.apellidos }}
+                  </h3>
+                  <span class="especialidad-badge">
+                    {{ medicoSeleccionado.especialidadNombre }}
+                  </span>
+                </div>
+              </div>
+
+              <mat-divider style="margin: 1rem 0"></mat-divider>
+
+              <div class="medico-datos">
+
+                <div class="dato-item">
+                  <div class="dato-icono">
+                    <mat-icon>badge</mat-icon>
+                  </div>
+                  <div>
+                    <p class="dato-label">CMP</p>
+                    <p class="dato-valor">{{ medicoSeleccionado.cmp }}</p>
+                  </div>
+                </div>
+
+                <div class="dato-item">
+                  <div class="dato-icono">
+                    <mat-icon>email</mat-icon>
+                  </div>
+                  <div>
+                    <p class="dato-label">Email</p>
+                    <p class="dato-valor">{{ medicoSeleccionado.email }}</p>
+                  </div>
+                </div>
+
+                <div class="dato-item">
+                  <div class="dato-icono">
+                    <mat-icon>phone</mat-icon>
+                  </div>
+                  <div>
+                    <p class="dato-label">Teléfono</p>
+                    <p class="dato-valor">
+                      {{ medicoSeleccionado.telefono || 'No registrado' }}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="aviso-box">
+                <mat-icon>info</mat-icon>
+                <span>Recibirás un email de confirmación al agendar</span>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+
         </div>
+      }
 
-      </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+
+  }
 
 </div>

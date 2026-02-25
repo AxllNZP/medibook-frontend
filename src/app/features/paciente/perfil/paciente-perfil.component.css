@@ -4,6 +4,7 @@
 .page-header h2 { margin: 0; color: #1565C0; font-size: 1.6rem; }
 .page-header p  { margin: 0.25rem 0 0; color: #666; font-size: 0.9rem; }
 
+/* ── Tarjeta usuario ────────────────────────────────── */
 .usuario-card { border-radius: 12px !important; margin-bottom: 1.5rem; }
 
 .usuario-info {
@@ -18,16 +19,14 @@
   border-radius: 50%;
   background: #1565C0;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
   flex-shrink: 0;
 }
 
-.usuario-info h3 { margin: 0; font-size: 1.2rem; }
-.usuario-info p  { margin: 0.25rem 0; color: #666; font-size: 0.9rem; }
+.usuario-texto h3 { margin: 0; font-size: 1.2rem; }
+.usuario-texto p  { margin: 0.25rem 0; color: #666; font-size: 0.9rem; }
 
 .grupo-badge {
   background: #fce4ec;
@@ -38,6 +37,126 @@
   font-weight: 600;
 }
 
+/* ── Tarjeta completitud ────────────────────────────── */
+.completitud-card {
+  border-radius: 12px !important;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #ddd;
+}
+
+.completitud-card.completo   { border-left-color: #2E7D32; }
+.completitud-card.incompleto { border-left-color: #E65100; }
+
+.completitud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.completitud-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.completitud-card.completo   .completitud-titulo mat-icon { color: #2E7D32; }
+.completitud-card.incompleto .completitud-titulo mat-icon { color: #E65100; }
+
+.porcentaje-texto {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* ── Barra de progreso ──────────────────────────────── */
+.barra-contenedor { margin-bottom: 1.25rem; }
+
+.barra-fondo {
+  width: 100%;
+  height: 10px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.barra-progreso {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+.barra-completa { background: #2E7D32; }
+.barra-media    { background: #F57C00; }
+.barra-baja     { background: #C62828; }
+
+/* ── Checklist de campos ────────────────────────────── */
+.campos-lista {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.campo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.campo-item.campo-ok {
+  background: #f1f8f1;
+  border-color: #c8e6c9;
+  color: #333;
+}
+
+.campo-icono-wrap {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.campo-icono-wrap mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
+
+.icono-ok       { background: #e8f5e9; color: #2E7D32; }
+.icono-ok mat-icon { color: #2E7D32; }
+.icono-pendiente { background: #f5f5f5; }
+.icono-pendiente mat-icon { color: #bbb; }
+
+.campo-nombre { flex: 1; }
+
+.campo-estado-icono {
+  font-size: 1.1rem !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+.campo-item.campo-ok     .campo-estado-icono { color: #2E7D32; }
+.campo-item:not(.campo-ok) .campo-estado-icono { color: #ddd; }
+
+/* ── Aviso completar ────────────────────────────────── */
+.aviso-completar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff3e0;
+  color: #E65100;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+.aviso-completar mat-icon { font-size: 1rem; width: 1rem; height: 1rem; flex-shrink: 0; }
+
+/* ── Formulario ─────────────────────────────────────── */
 .form-card { border-radius: 12px !important; }
 
 .form-grid {
@@ -53,8 +172,5 @@
   justify-content: flex-end;
 }
 
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  padding: 3rem;
-}
+/* ── Spinner ────────────────────────────────────────── */
+.spinner-container { display: flex; justify-content: center; padding: 3rem; }

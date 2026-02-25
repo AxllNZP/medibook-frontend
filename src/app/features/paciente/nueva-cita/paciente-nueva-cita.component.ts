@@ -15,15 +15,18 @@ import { EspecialidadService } from '../../../core/services/especialidad.service
 import { MedicoResponse } from '../../../core/models/medico.model';
 import { EspecialidadResponse } from '../../../core/models/especialidad.model';
 import { RouterLink } from '@angular/router';
+import { MatDivider } from "@angular/material/divider";
+import { CitaResponse } from '../../../core/models/cita.model';
 
 @Component({
   selector: 'app-paciente-nueva-cita',
   standalone: true,
   imports: [
-  CommonModule, ReactiveFormsModule, RouterLink,
-  MatCardModule, MatInputModule, MatButtonModule,
-  MatIconModule, MatSelectModule,
-  MatSnackBarModule, MatProgressSpinnerModule
+    CommonModule, ReactiveFormsModule, RouterLink,
+    MatCardModule, MatInputModule, MatButtonModule,
+    MatIconModule, MatSelectModule,
+    MatSnackBarModule, MatProgressSpinnerModule,
+    MatDivider
 ],
   templateUrl: './paciente-nueva-cita.component.html',
   styleUrl: './paciente-nueva-cita.component.css'
@@ -40,6 +43,8 @@ export class PacienteNuevaCitaComponent implements OnInit {
   medicosFiltrados: MedicoResponse[] = [];
   especialidades: EspecialidadResponse[] = [];
   guardando = false;
+  medicoSeleccionado: MedicoResponse | null = null;
+  citaConfirmada: CitaResponse | null = null;
 
   form = this.fb.group({
     especialidadId: [null as number | null],
@@ -76,26 +81,45 @@ export class PacienteNuevaCitaComponent implements OnInit {
   }
 
   guardar() {
-    if (this.form.invalid) return;
-    this.guardando = true;
+  if (this.form.invalid) return;
+  this.guardando = true;
 
-    const { medicoId, fechaHora, motivo } = this.form.value;
+  const { medicoId, fechaHora, motivo } = this.form.value;
 
-    this.citaService.crearCita({
-      medicoId: medicoId!,
-      fechaHora: new Date(fechaHora!).toISOString().slice(0, 19),
-      motivo: motivo || ''
-    }).subscribe({
-      next: () => {
-        this.snackBar.open('¡Cita agendada! Revisa tu email de confirmación', 'Cerrar', {
-          duration: 5000
-        });
-        this.router.navigate(['/paciente/mis-citas']);
-      },
-      error: (err) => {
-        this.snackBar.open(err.error?.mensaje || 'Error al agendar cita', 'Cerrar', { duration: 3000 });
-        this.guardando = false;
-      }
-    });
-  }
+  this.citaService.crearCita({
+    medicoId: medicoId!,
+    fechaHora: new Date(fechaHora!).toISOString().slice(0, 19),
+    motivo: motivo || ''
+  }).subscribe({
+    next: (citaCreada) => {
+      // Guardamos la cita creada para mostrar la pantalla de confirmación
+      this.citaConfirmada = citaCreada;
+      this.guardando = false;
+    },
+    error: (err) => {
+      this.snackBar.open(err.error?.mensaje || 'Error al agendar cita', 'Cerrar', {
+        duration: 3000,
+        panelClass: ['snack-error']
+      });
+      this.guardando = false;
+    }
+  });
+}
+
+  onMedicoChange(medicoId: number | null) {
+  this.medicoSeleccionado = medicoId
+    ? this.medicosFiltrados.find(m => m.id === medicoId) || null
+    : null;
+}
+
+irAMisCitas() {
+  this.router.navigate(['/paciente/mis-citas']);
+}
+
+agendarOtra() {
+  this.citaConfirmada = null;
+  this.medicoSeleccionado = null;
+  this.form.reset();
+}
+
 }

@@ -25,6 +25,7 @@ export class PacienteDashboardComponent {
   // IMPLEMENTACION DE ICONOS Y RUTAS EN EL SIDENAV
 menuItems = [
   { label: 'Inicio',     icon: 'dashboard',      ruta: '/paciente',           exact: true  },
+  { label: 'Historial Clínico', icon: 'history', ruta: '/paciente/historial', exact: false },
   { label: 'Mi Perfil',  icon: 'account_circle', ruta: '/paciente/perfil',    exact: false },
   { label: 'Mis Citas',  icon: 'calendar_month', ruta: '/paciente/mis-citas', exact: false },
   { label: 'Nueva Cita', icon: 'add_circle',      ruta: '/paciente/nueva-cita', exact: false }

@@ -49,7 +49,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/paciente/nueva-cita/paciente-nueva-cita.component')
             .then(m => m.PacienteNuevaCitaComponent)
-      }
+      },
+      {
+        path: 'historial',
+        loadComponent: () =>
+          import('./features/paciente/historial/paciente-historial.component')
+            .then(m => m.PacienteHistorialComponent)
+}
+      
     ]
   },
 

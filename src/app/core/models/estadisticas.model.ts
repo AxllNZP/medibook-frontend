@@ -18,4 +18,10 @@ export interface EstadisticasResponse {
 
   // Distribución por día: { "lunes": 4, "martes": 2, ... }
   citasPorDiaSemana: { [dia: string]: number };
+
+  //Implementacion de citas por medico
+  citasPorMedico: { [medico: string]: number };
+
+  //Citas por especilidad
+  citasPorEspecialidad: { [especialidad: string]: number };
 }

@@ -12,6 +12,8 @@ import { CitaResponse, EstadoCita } from '../../../core/models/cita.model';
 import { EstadoBadgeComponent } from '../../../shared/estado-badge/estado-badge.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { CitasPorEstadoPipe } from '../../../core/pipes/citas-por-estado.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-paciente-mis-citas',
@@ -20,7 +22,8 @@ imports: [
   CommonModule, RouterLink,
   MatCardModule, MatButtonModule, MatIconModule,
   MatSnackBarModule, MatProgressSpinnerModule,
-  MatDialogModule, EstadoBadgeComponent
+  MatDialogModule, EstadoBadgeComponent,
+  CitasPorEstadoPipe, FormsModule
 ],
   templateUrl: './paciente-mis-citas.component.html',
   styleUrl: './paciente-mis-citas.component.css'
@@ -32,7 +35,10 @@ export class PacienteMisCitasComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   citas: CitaResponse[] = [];
+  citasFiltradas: CitaResponse[] = [];
   cargando = false;
+  filtroEstado = 'TODOS';
+  estados: string[] = ['PENDIENTE', 'CONFIRMADA', 'FINALIZADA', 'CANCELADA'];
 
   ngOnInit() {
     this.cargarCitas();
@@ -42,12 +48,12 @@ export class PacienteMisCitasComponent implements OnInit {
     this.cargando = true;
     this.pacienteService.misCitas().subscribe({
       next: (data) => {
-        // Ordenamos por fecha más reciente primero
-        this.citas = data.sort((a, b) =>
-          new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime()
-        );
-        this.cargando = false;
-      },
+  this.citas = data.sort((a, b) =>
+    new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime()
+  );
+  this.aplicarFiltro();
+  this.cargando = false;
+},
       error: () => {
         this.snackBar.open('Error al cargar citas', 'Cerrar', { duration: 3000 });
         this.cargando = false;
@@ -91,4 +97,10 @@ cancelar(id: number) {
   puedeCancelar(estado: EstadoCita): boolean {
     return estado === 'PENDIENTE' || estado === 'CONFIRMADA';
   }
+
+  aplicarFiltro() {
+  this.citasFiltradas = this.filtroEstado === 'TODOS'
+    ? this.citas
+    : this.citas.filter(c => c.estado === this.filtroEstado);
+}
 }

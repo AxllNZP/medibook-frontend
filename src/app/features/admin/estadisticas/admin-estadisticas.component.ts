@@ -39,6 +39,12 @@ export class AdminEstadisticasComponent implements OnInit {
   // Días con actividad
   diasConCitas: { dia: string; cantidad: number; porcentaje: number }[] = [];
 
+  // Médicos con citas finalizadas
+  medicosConCitas: { nombre: string; cantidad: number; porcentaje: number }[] = [];
+
+  // Especialidades con citas finalizadas
+  especialidadesConCitas: { nombre: string; cantidad: number; porcentaje: number }[] = [];
+
   ngOnInit() {
     this.cargarEstadisticas();
   }
@@ -51,6 +57,8 @@ export class AdminEstadisticasComponent implements OnInit {
         this.procesarHoras(data);
         this.procesarDias(data);
         this.cargando = false;
+        this.procesarMedicos(data);
+        this.procesarEspecialidades(data);
       },
       error: () => {
         this.cargando = false;
@@ -86,6 +94,32 @@ export class AdminEstadisticasComponent implements OnInit {
           : 0
       }));
   }
+
+private procesarMedicos(data: EstadisticasResponse) {
+  const entradas = Object.entries(data.citasPorMedico)
+    .map(([nombre, cantidad]) => ({ nombre, cantidad }))
+    .sort((a, b) => b.cantidad - a.cantidad);
+
+  const max = Math.max(...entradas.map(e => e.cantidad));
+
+  this.medicosConCitas = entradas.map(e => ({
+    ...e,
+    porcentaje: max > 0 ? Math.round((e.cantidad / max) * 100) : 0
+  }));
+}
+
+private procesarEspecialidades(data: EstadisticasResponse) {
+  const entradas = Object.entries(data.citasPorEspecialidad)
+    .map(([nombre, cantidad]) => ({ nombre, cantidad }))
+    .sort((a, b) => b.cantidad - a.cantidad);
+
+  const max = Math.max(...entradas.map(e => e.cantidad));
+
+  this.especialidadesConCitas = entradas.map(e => ({
+    ...e,
+    porcentaje: max > 0 ? Math.round((e.cantidad / max) * 100) : 0
+  }));
+}
 
   // Color de la barra de no-show según el porcentaje
   colorNoShow(): string {

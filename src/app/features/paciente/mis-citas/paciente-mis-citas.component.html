@@ -5,14 +5,69 @@
       <h2>Mis Citas</h2>
       <p>Historial y citas próximas</p>
     </div>
-    <button mat-raised-button color="primary" routerLink="/paciente/nueva-cita">
-      <mat-icon>add</mat-icon> Nueva Cita
-    </button>
+    <div class="header-acciones">
+      <!-- Filtro por estado -->
+      <div class="filtro-container">
+        <mat-icon>filter_list</mat-icon>
+        <select [(ngModel)]="filtroEstado"
+                (ngModelChange)="aplicarFiltro()"
+                class="filtro-select">
+          <option value="TODOS">Todos</option>
+          @for (e of estados; track e) {
+            <option [value]="e">{{ e }}</option>
+          }
+        </select>
+      </div>
+      <button mat-raised-button color="primary" routerLink="/paciente/nueva-cita">
+        <mat-icon>add</mat-icon> Nueva Cita
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjetas resumen -->
+  <div class="resumen-grid">
+    <div class="resumen-card pendiente"
+         [class.activo]="filtroEstado === 'PENDIENTE'"
+         (click)="filtroEstado = 'PENDIENTE'; aplicarFiltro()">
+      <mat-icon>schedule</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'PENDIENTE' }}</p>
+        <p class="lbl">Pendientes</p>
+      </div>
+    </div>
+    <div class="resumen-card confirmada"
+         [class.activo]="filtroEstado === 'CONFIRMADA'"
+         (click)="filtroEstado = 'CONFIRMADA'; aplicarFiltro()">
+      <mat-icon>check_circle</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'CONFIRMADA' }}</p>
+        <p class="lbl">Confirmadas</p>
+      </div>
+    </div>
+    <div class="resumen-card finalizada"
+         [class.activo]="filtroEstado === 'FINALIZADA'"
+         (click)="filtroEstado = 'FINALIZADA'; aplicarFiltro()">
+      <mat-icon>task_alt</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'FINALIZADA' }}</p>
+        <p class="lbl">Finalizadas</p>
+      </div>
+    </div>
+    <div class="resumen-card cancelada"
+         [class.activo]="filtroEstado === 'CANCELADA'"
+         (click)="filtroEstado = 'CANCELADA'; aplicarFiltro()">
+      <mat-icon>cancel</mat-icon>
+      <div>
+        <p class="num">{{ citas | citasPorEstado:'CANCELADA' }}</p>
+        <p class="lbl">Canceladas</p>
+      </div>
+    </div>
   </div>
 
   @if (cargando) {
     <div class="spinner-container"><mat-spinner diameter="40"></mat-spinner></div>
-  } @else if (citas.length === 0) {
+
+  } @else if (citasFiltradas.length === 0 && citas.length === 0) {
     <div class="sin-citas">
       <mat-icon>calendar_today</mat-icon>
       <h3>No tienes citas registradas</h3>
@@ -21,14 +76,24 @@
         Agendar Cita
       </button>
     </div>
+
+  } @else if (citasFiltradas.length === 0) {
+    <div class="sin-citas">
+      <mat-icon>filter_list_off</mat-icon>
+      <h3>Sin citas en este estado</h3>
+      <p>Prueba seleccionando otro filtro</p>
+      <button mat-stroked-button (click)="filtroEstado = 'TODOS'; aplicarFiltro()">
+        Ver todas
+      </button>
+    </div>
+
   } @else {
     <div class="citas-grid">
-      @for (cita of citas; track cita.id) {
+      @for (cita of citasFiltradas; track cita.id) {
         <mat-card class="cita-card">
           <mat-card-content>
             <div class="cita-header">
-              <!-- ✅ DESPUÉS -->
-                  <app-estado-badge [estado]="cita.estado" />
+              <app-estado-badge [estado]="cita.estado" />
               <span class="fecha">
                 <mat-icon>calendar_today</mat-icon>
                 {{ cita.fechaHora | date:'dd/MM/yyyy HH:mm' }}

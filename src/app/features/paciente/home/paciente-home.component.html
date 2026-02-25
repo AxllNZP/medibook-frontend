@@ -44,33 +44,40 @@
 
       <mat-card-content>
         @if (proximaCita) {
-          <div class="proxima-info">
-            <div class="proxima-fecha">
-              <mat-icon>calendar_today</mat-icon>
-              <span>{{ proximaCita.fechaHora | date:'EEEE dd/MM/yyyy HH:mm':'':'es' }}</span>
-            </div>
+  <div class="proxima-info">
+    <div class="proxima-fecha">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ proximaCita.fechaHora | date:'EEEE dd/MM/yyyy HH:mm':'':'es' }}</span>
+    </div>
 
-            <div class="proxima-detalle">
-              <div class="info-row">
-                <mat-icon>person</mat-icon>
-                <span>Dr/Dra. {{ proximaCita.medicoNombre }}</span>
-              </div>
-              <div class="info-row">
-                <mat-icon>medical_services</mat-icon>
-                <span>{{ proximaCita.especialidad }}</span>
-              </div>
+    <div class="proxima-detalle">
+      <div class="info-row">
+        <mat-icon>person</mat-icon>
+        <span>Dr/Dra. {{ proximaCita.medicoNombre }}</span>
+      </div>
+      <div class="info-row">
+        <mat-icon>medical_services</mat-icon>
+        <span>{{ proximaCita.especialidad }}</span>
+      </div>
 
-              @if (proximaCita.motivo) {
-                <div class="info-row">
-                  <mat-icon>notes</mat-icon>
-                  <span>{{ proximaCita.motivo }}</span>
-                </div>
-              }
-            </div>
+      @if (proximaCita.motivo) {
+        <div class="info-row">
+          <mat-icon>notes</mat-icon>
+          <span>{{ proximaCita.motivo }}</span>
+        </div>
+      }
+    </div>
 
-            <app-estado-badge [estado]="proximaCita.estado" />
-          </div>
-        } @else {
+    <div class="proxima-acciones">
+      <app-estado-badge [estado]="proximaCita.estado" />
+      <button mat-stroked-button color="warn"
+              (click)="cancelarDesdeHome(proximaCita.id)">
+        <mat-icon>cancel</mat-icon> Cancelar cita
+      </button>
+    </div>
+
+  </div>
+} @else {
           <div class="sin-cita">
             <mat-icon>event_busy</mat-icon>
             <p>No tienes citas próximas</p>

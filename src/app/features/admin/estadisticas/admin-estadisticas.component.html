@@ -214,6 +214,81 @@
 
     </div>
 
+    <!-- ── Médicos más buscados y Especialidades más buscadas ── -->
+<div class="dos-columnas">
+
+  <mat-card class="seccion-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>stethoscope</mat-icon>
+      <mat-card-title>Médicos más buscados</mat-card-title>
+      <mat-card-subtitle>Por citas finalizadas</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      @if (medicosConCitas.length === 0) {
+        <div class="sin-datos">
+          <mat-icon>person_off</mat-icon>
+          <p>Sin datos suficientes</p>
+        </div>
+      } @else {
+        <div class="barras-lista">
+          @for (item of medicosConCitas; track item.nombre) {
+            <div class="barra-item">
+              <div class="barra-header">
+                <span class="barra-label">Dr/Dra. {{ item.nombre }}</span>
+                <strong>{{ item.cantidad }}</strong>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                [value]="item.porcentaje"
+                style="--mdc-linear-progress-active-indicator-color: #6A1B9A;
+                       --mdc-linear-progress-track-color: #f3e5f5">
+              </mat-progress-bar>
+            </div>
+          }
+        </div>
+      }
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="seccion-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>medical_services</mat-icon>
+      <mat-card-title>Especialidades más buscadas</mat-card-title>
+      <mat-card-subtitle>Por citas finalizadas</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      @if (especialidadesConCitas.length === 0) {
+        <div class="sin-datos">
+          <mat-icon>medical_services</mat-icon>
+          <p>Sin datos suficientes</p>
+        </div>
+      } @else {
+        <div class="barras-lista">
+          @for (item of especialidadesConCitas; track item.nombre) {
+            <div class="barra-item">
+              <div class="barra-header">
+                <span class="barra-label">{{ item.nombre }}</span>
+                <strong>{{ item.cantidad }}</strong>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                [value]="item.porcentaje"
+                style="--mdc-linear-progress-active-indicator-color: #E65100;
+                       --mdc-linear-progress-track-color: #fff3e0">
+              </mat-progress-bar>
+            </div>
+          }
+        </div>
+      }
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
   } @else {
     <div class="sin-datos-global">
       <mat-icon>bar_chart</mat-icon>
